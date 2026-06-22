@@ -13,22 +13,22 @@ font-family:Tahoma,Arial,sans-serif;
 background:#ffffff;
 color:#111827
 }
-  .app{
+.app{
 max-width:1250px;
 margin:20px auto;
 background:#fff;
 border-radius:24px;
 overflow:hidden;
-box-shadow:0 20px 50px rgba(0,0,0,.35)
+box-shadow:0 20px 50px rgba(0,0,0,.20)
 }
 .header{
-background:linear-gradient(135deg,#7f1d1d,#991b1b);
-  color:white;
+background:linear-gradient(135deg,#450a0a,#7f1d1d,#b91c1c);
+color:white;
 padding:28px;
 text-align:center
 }
 .header h1{margin:0;font-size:34px}
-.header p{margin:10px 0 0;color:#cbd5e1}
+.header p{margin:10px 0 0;color:#fee2e2}
 .main{
 display:grid;
 grid-template-columns:300px 1fr;
@@ -46,12 +46,12 @@ margin:8px 0;
 padding:14px;
 border:0;
 border-radius:14px;
-background:#e2e8f0;
+background:#fee2e2;
 cursor:pointer;
 text-align:right;
 font-size:15px
 }
-.side button:hover{background:#cbd5e1}
+.side button:hover{background:#fecaca}
 .content{padding:24px}
 .card{
 background:#f8fafc;
@@ -76,14 +76,14 @@ margin:6px 0
 }
 button.send{
 background:#991b1b;
-  color:white;
+color:white;
 border:0;
 border-radius:12px;
 padding:13px 22px;
 cursor:pointer;
 margin-top:8px
 }
-button.send:hover{background:#1e293b}
+button.send:hover{background:#7f1d1d}
 .result{
 background:white;
 border:1px solid #cbd5e1;
@@ -94,8 +94,8 @@ line-height:1.9
 }
 .badge{
 display:inline-block;
-background:#dbeafe;
-color:#1e3a8a;
+background:#fee2e2;
+color:#991b1b;
 padding:6px 10px;
 border-radius:999px;
 font-size:13px;
@@ -117,7 +117,7 @@ margin:10px 0;
 line-height:1.8;
 white-space:pre-wrap
 }
-.user{background:#dbeafe;margin-right:22%}
+.user{background:#fee2e2;margin-right:22%}
 .bot{background:white;border:1px solid #ddd;margin-left:22%}
 .input-row{display:flex;gap:10px;margin-top:12px}
 .input-row input{flex:1}
@@ -133,7 +133,7 @@ border:1px solid #e5e7eb;
 padding:10px;
 text-align:right
 }
-.table th{background:#e2e8f0}
+.table th{background:#fee2e2}
 @media(max-width:850px){
 .main{grid-template-columns:1fr}
 .side{border-left:0;border-bottom:1px solid #e5e7eb}
@@ -171,9 +171,25 @@ text-align:right
 </div>
 </div>
 
+<script src="knowledge.js"></script>
+
 <script>
 function layout(title, html){
 document.getElementById("content").innerHTML = `<h2>${title}</h2>${html}`;
+}
+
+function normalizeArabic(text){
+return text
+.replace(/[أإآ]/g,"ا")
+.replace(/ة/g,"ه")
+.replace(/ى/g,"ي")
+.replace(/[ًٌٍَُِّْ]/g,"")
+.toLowerCase();
+}
+
+function extractAmount(text){
+let match = text.match(/\d+(\.\d+)?/);
+return match ? match[0] : "____";
 }
 
 /* الرئيسية */
@@ -181,36 +197,36 @@ function showHome(){
 layout("لوحة التحكم الرئيسية", `
 <div class="grid">
 <div class="card"><h3>📘 القيود المحاسبية</h3>مولد قيود متقدم لمبيعات، مشتريات، رواتب، بنوك، شيكات، أصول، قروض، ضرائب.</div>
+<div class="card"><h3>📚 مكتبة المعرفة</h3>المساعد يبحث في ملف knowledge.js قبل القيود اليومية.</div>
 <div class="card"><h3>💰 الضرائب والرواتب</h3>حاسبة ضريبة دخل أفراد، ضريبة مبيعات، صافي راتب، وضمان اجتماعي.</div>
 <div class="card"><h3>🏦 البنوك والتسويات</h3>إعداد مذكرة تسوية بنك مع الفروقات والرصيد المعدل.</div>
-<div class="card"><h3>📊 التحليل المالي</h3>نسب السيولة، الربحية، المديونية، وهامش الربح.</div>
 </div>
 
 <div class="card">
 <span class="badge">مجاني 100%</span>
 <span class="badge">بدون API</span>
-<span class="badge">يعمل على GitHub Pages</span>
+<span class="badge">مرتبط مع knowledge.js</span>
 <span class="badge">مناسب لدورة المحاسبة العملية</span>
 </div>
 `);
 }
 
-/* مساعد يومي */
+/* مساعد المحاسب اليومي */
 const smartEntries = [
 {cat:"المشتريات",keys:["شراء بضاعة نقدا","اشتريت بضاعة نقدا","شراء نقدي","فاتورة مشتريات نقدية"],ans:"من حـ/ المشتريات أو المخزون {a}\nإلى حـ/ الصندوق {a}\n\nالشرح: شراء بضاعة وتم الدفع نقداً."},
 {cat:"المشتريات",keys:["شراء بضاعة على الحساب","اشتريت بضاعة على الحساب","شراء آجل","فاتورة مشتريات على الحساب"],ans:"من حـ/ المشتريات أو المخزون {a}\nإلى حـ/ الموردين {a}\n\nالشرح: شراء بضاعة من المورد ولم يتم الدفع فوراً."},
 {cat:"المشتريات",keys:["مردودات مشتريات","ارجاع بضاعة للمورد","رد مشتريات"],ans:"من حـ/ الموردين أو الصندوق {a}\nإلى حـ/ مردودات المشتريات {a}"},
-{cat:"المشتريات",keys:["خصم مكتسب","خصم من المورد","حصلت على خصم من المورد"],ans:"من حـ/ الموردين {a}\nإلى حـ/ خصم مكتسب {a}"},
+{cat:"المشتريات",keys:["خصم مكتسب","خصم من المورد"],ans:"من حـ/ الموردين {a}\nإلى حـ/ خصم مكتسب {a}"},
 
 {cat:"المبيعات",keys:["بيع نقدي","بعت نقدا","مبيعات نقدية","فاتورة مبيعات نقدية"],ans:"من حـ/ الصندوق {a}\nإلى حـ/ المبيعات {a}\n\nوإذا كانت العملية خاضعة للضريبة يتم فصل ضريبة المبيعات."},
 {cat:"المبيعات",keys:["بيع على الحساب","مبيعات آجلة","بعت على الحساب","فاتورة مبيعات على الحساب"],ans:"من حـ/ العملاء {a}\nإلى حـ/ المبيعات {a}\n\nوإذا كانت العملية خاضعة للضريبة يتم فصل ضريبة المبيعات."},
 {cat:"المبيعات",keys:["مردودات مبيعات","ارجاع بضاعة من العميل","رد مبيعات"],ans:"من حـ/ مردودات المبيعات {a}\nإلى حـ/ العملاء أو الصندوق {a}"},
-{cat:"المبيعات",keys:["خصم مسموح","خصم للعميل","منحت العميل خصم"],ans:"من حـ/ خصم مسموح {a}\nإلى حـ/ العملاء {a}"},
+{cat:"المبيعات",keys:["خصم مسموح","خصم للعميل"],ans:"من حـ/ خصم مسموح {a}\nإلى حـ/ العملاء {a}"},
 
 {cat:"العملاء والموردين",keys:["تحصيل من عميل","قبض من عميل","استلام من عميل","سداد عميل"],ans:"من حـ/ الصندوق أو البنك {a}\nإلى حـ/ العملاء {a}"},
 {cat:"العملاء والموردين",keys:["دفع لمورد","سداد مورد","دفعت لمورد","تسديد مورد"],ans:"من حـ/ الموردين {a}\nإلى حـ/ الصندوق أو البنك {a}"},
 {cat:"العملاء والموردين",keys:["دفعة مقدمة من عميل","استلمت دفعة مقدمة","عربون من عميل"],ans:"من حـ/ الصندوق أو البنك {a}\nإلى حـ/ دفعات مقدمة من العملاء {a}"},
-{cat:"العملاء والموردين",keys:["دفعة مقدمة لمورد","دفعت عربون لمورد","دفعة تحت الحساب لمورد"],ans:"من حـ/ دفعات مقدمة للموردين {a}\nإلى حـ/ الصندوق أو البنك {a}"},
+{cat:"العملاء والموردين",keys:["دفعة مقدمة لمورد","دفعت عربون لمورد"],ans:"من حـ/ دفعات مقدمة للموردين {a}\nإلى حـ/ الصندوق أو البنك {a}"},
 
 {cat:"المصاريف",keys:["ايجار","إيجار","دفع ايجار","مصروف ايجار"],ans:"من حـ/ مصروف الإيجار {a}\nإلى حـ/ الصندوق أو البنك {a}"},
 {cat:"المصاريف",keys:["كهرباء","مياه","كهرباء ومياه"],ans:"من حـ/ مصروف الكهرباء والمياه {a}\nإلى حـ/ الصندوق أو البنك {a}"},
@@ -234,7 +250,7 @@ const smartEntries = [
 {cat:"الرواتب",keys:["استرداد سلفة موظف","خصم سلفة من موظف"],ans:"من حـ/ الصندوق أو الرواتب المستحقة {a}\nإلى حـ/ سلف موظفين {a}"},
 
 {cat:"البنوك والشيكات",keys:["عمولة بنك","عمولات بنكية","مصاريف بنك"],ans:"من حـ/ مصاريف وعمولات بنكية {a}\nإلى حـ/ البنك {a}"},
-{cat:"البنوك والشيكات",keys:["ايداع في البنك","إيداع في البنك","حولت للصندوق الى البنك"],ans:"من حـ/ البنك {a}\nإلى حـ/ الصندوق {a}"},
+{cat:"البنوك والشيكات",keys:["ايداع في البنك","إيداع في البنك"],ans:"من حـ/ البنك {a}\nإلى حـ/ الصندوق {a}"},
 {cat:"البنوك والشيكات",keys:["سحب من البنك","سحبت من البنك للصندوق"],ans:"من حـ/ الصندوق {a}\nإلى حـ/ البنك {a}"},
 {cat:"البنوك والشيكات",keys:["استلام شيك","شيك من عميل","شيك برسم التحصيل"],ans:"من حـ/ شيكات برسم التحصيل {a}\nإلى حـ/ العملاء {a}"},
 {cat:"البنوك والشيكات",keys:["تحصيل شيك","ايداع شيك بالبنك"],ans:"من حـ/ البنك {a}\nإلى حـ/ شيكات برسم التحصيل {a}"},
@@ -260,18 +276,23 @@ const smartEntries = [
 {cat:"التسويات والإقفال",keys:["اغلاق المصروفات","إغلاق المصروفات"],ans:"من حـ/ ملخص الدخل {a}\nإلى حـ/ المصروفات {a}"}
 ];
 
-function extractAmount(text){
-let match = text.match(/\d+(\.\d+)?/);
-return match ? match[0] : "____";
+function searchKnowledge(question){
+if(typeof accountingKnowledge === "undefined"){
+return null;
 }
 
-function normalizeArabic(text){
-return text
-.replace(/[أإآ]/g,"ا")
-.replace(/ة/g,"ه")
-.replace(/ى/g,"ي")
-.replace(/[ًٌٍَُِّْ]/g,"")
-.toLowerCase();
+let q = normalizeArabic(question);
+
+for(let item of accountingKnowledge){
+for(let keyword of item.keywords){
+let k = normalizeArabic(keyword);
+if(q.includes(k)){
+return item.answer;
+}
+}
+}
+
+return null;
 }
 
 function findBestEntry(q){
@@ -284,6 +305,7 @@ let score = 0;
 for(let key of item.keys){
 let nk = normalizeArabic(key);
 if(nq.includes(nk)) score += 10;
+
 let words = nk.split(" ");
 for(let w of words){
 if(w.length > 2 && nq.includes(w)) score += 1;
@@ -304,34 +326,34 @@ let catsHtml = cats.map(c=>`<span class="badge">${c}</span>`).join("");
 
 layout("مساعد المحاسب اليومي Pro", `
 <div class="card">
-<h3>اكتب العملية كما تحدث فعلياً</h3>
-<p>مثال: دفعت إيجار المكتب 700 دينار من البنك، أو استلمت رسوم دورة تدريبية 250 دينار.</p>
+<h3>اكتب العملية أو السؤال المحاسبي</h3>
+<p>مثال: دفعت إيجار المكتب 700 دينار، أو ما هي مذكرة تسوية البنك؟</p>
 ${catsHtml}
 </div>
 
 <div class="chat" id="chat">
 <div class="msg bot">مرحباً 👋
 أنا مساعد المحاسب اليومي.
-اكتب أي عملية مالية وسأحاول تحديد القيد المناسب وتصنيفها محاسبياً.</div>
+أبحث أولاً داخل مكتبة المعرفة knowledge.js، وإذا لم أجد إجابة أبحث في قاعدة القيود المحاسبية اليومية.</div>
 </div>
 
 <div class="input-row">
 <input id="dailyQ" placeholder="مثال: دفعت مصروف دعاية 150 دينار نقداً" onkeydown="if(event.key==='Enter') dailyAsk()">
-<button class="send" onclick="dailyAsk()">تحليل العملية</button>
+<button class="send" onclick="dailyAsk()">تحليل</button>
 </div>
 
 <div class="grid">
 <div class="card">
 <h3>أمثلة سريعة</h3>
+<button class="send" onclick="quickDaily('ما هي مذكرة تسوية البنك')">سؤال من المكتبة</button>
 <button class="send" onclick="quickDaily('دفعت إيجار المكتب 700 دينار')">إيجار</button>
 <button class="send" onclick="quickDaily('استلمت إيراد تدريب 250 دينار')">إيراد تدريب</button>
 <button class="send" onclick="quickDaily('اشتريت بضاعة على الحساب 5000 دينار')">شراء آجل</button>
-<button class="send" onclick="quickDaily('سددت لمورد 1200 دينار')">سداد مورد</button>
 </div>
 
 <div class="card">
 <h3>تنبيه تدريبي</h3>
-هذه الأداة مجانية وبدون API. تعتمد على قاعدة معرفة وكلمات مفتاحية، لذلك قد تحتاج مراجعة القيد حسب طبيعة الشركة والسياسة المحاسبية.
+هذه الأداة مجانية وبدون API. تعتمد على مكتبة معرفة وكلمات مفتاحية، وقد تحتاج مراجعة القيد حسب طبيعة الشركة والسياسة المحاسبية.
 </div>
 </div>
 `);
@@ -347,6 +369,7 @@ let q = document.getElementById("dailyQ").value.trim();
 if(!q) return;
 
 let amount = extractAmount(q);
+let knowledgeAnswer = searchKnowledge(q);
 let item = findBestEntry(q);
 let chat = document.getElementById("chat");
 
@@ -354,7 +377,15 @@ chat.innerHTML += `<div class="msg user">${q}</div>`;
 
 let reply = "";
 
-if(item){
+if(knowledgeAnswer){
+reply = `📚 من المكتبة المحاسبية
+
+${knowledgeAnswer}
+
+المصدر:
+قاعدة المعرفة الخاصة بمساعد صرح المحاسبي.`;
+}
+else if(item){
 let entry = item.ans.replaceAll("{a}", amount);
 reply = `التصنيف: ${item.cat}
 
@@ -365,7 +396,8 @@ ${entry}
 
 ملاحظة:
 إذا كانت العملية تشمل ضريبة مبيعات أو اقتطاعات، يجب فصل الضريبة أو الاقتطاع في القيد حسب الفاتورة أو المستند.`;
-}else{
+}
+else{
 reply = `لم أتعرف على العملية بدقة.
 
 جرّب كتابة العملية بوضوح مثل:
@@ -373,14 +405,15 @@ reply = `لم أتعرف على العملية بدقة.
 - بعت بضاعة نقداً 1000 دينار
 - استلمت شيك من عميل 500 دينار
 - دفعت ضريبة مبيعات 300 دينار
-- حصلت على قرض بنكي 10000 دينار`;
+- ما هي مذكرة تسوية البنك`;
 }
 
 chat.innerHTML += `<div class="msg bot">${reply}</div>`;
 document.getElementById("dailyQ").value = "";
 chat.scrollTop = chat.scrollHeight;
 }
-  /* مولد القيود */
+
+/* مولد القيود */
 const entries = {
 cash_purchase:["شراء بضاعة نقداً","من حـ/ المشتريات أو المخزون {a}\nإلى حـ/ الصندوق {a}"],
 credit_purchase:["شراء بضاعة على الحساب","من حـ/ المشتريات أو المخزون {a}\nإلى حـ/ الموردين {a}"],
@@ -406,15 +439,12 @@ depreciation:["إهلاك أصل ثابت","من حـ/ مصروف الإهلاك
 loan_received:["الحصول على قرض","من حـ/ البنك {a}\nإلى حـ/ قرض بنكي {a}"],
 loan_payment:["سداد قرض","من حـ/ قرض بنكي {a}\nإلى حـ/ البنك {a}"],
 interest_expense:["فوائد قرض","من حـ/ مصروف فوائد {a}\nإلى حـ/ البنك أو فوائد مستحقة {a}"],
-vat_due:["إثبات ضريبة مبيعات مستحقة","من حـ/ العملاء أو الصندوق {a}\nإلى حـ/ ضريبة المبيعات المستحقة {a}"],
-vat_input:["ضريبة مدخلات","من حـ/ ضريبة مبيعات قابلة للخصم {a}\nإلى حـ/ الموردين أو الصندوق {a}"],
 vat_payment:["توريد ضريبة مبيعات","من حـ/ ضريبة المبيعات المستحقة {a}\nإلى حـ/ البنك {a}"],
 cheque_received:["استلام شيك من عميل","من حـ/ شيكات برسم التحصيل {a}\nإلى حـ/ العملاء {a}"],
 cheque_collected:["تحصيل شيك بالبنك","من حـ/ البنك {a}\nإلى حـ/ شيكات برسم التحصيل {a}"],
 cheque_paid:["إصدار شيك لمورد","من حـ/ الموردين {a}\nإلى حـ/ شيكات صادرة {a}"],
 bad_debt:["إعدام دين","من حـ/ ديون معدومة {a}\nإلى حـ/ العملاء {a}"],
 provision_debt:["تكوين مخصص ديون مشكوك فيها","من حـ/ مصروف ديون مشكوك فيها {a}\nإلى حـ/ مخصص ديون مشكوك فيها {a}"],
-inventory_adjustment:["تسوية نقص مخزون","من حـ/ تكلفة بضاعة مباعة أو خسائر مخزون {a}\nإلى حـ/ المخزون {a}"],
 closing_revenue:["إغلاق الإيرادات","من حـ/ الإيرادات {a}\nإلى حـ/ ملخص الدخل {a}"],
 closing_expense:["إغلاق المصروفات","من حـ/ ملخص الدخل {a}\nإلى حـ/ المصروفات {a}"]
 };
