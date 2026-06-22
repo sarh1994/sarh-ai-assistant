@@ -109,20 +109,98 @@ layout("مولد القيود المحاسبية", `
 <select id="entryType">
 <option value="cash_purchase">شراء بضاعة نقداً</option>
 <option value="credit_purchase">شراء بضاعة على الحساب</option>
+<option value="purchase_return">مردودات مشتريات</option>
 <option value="cash_sale">بيع نقدي</option>
 <option value="credit_sale">بيع على الحساب</option>
-<option value="collection">تحصيل من عميل</option>
-<option value="payment">دفع لمورد</option>
-<option value="expense">دفع مصروف</option>
+<option value="sales_return">مردودات مبيعات</option>
+<option value="customer_collection">تحصيل من عميل</option>
+<option value="supplier_payment">دفع لمورد</option>
+<option value="rent_expense">دفع إيجار</option>
+<option value="salary_expense">قيد رواتب</option>
+<option value="electricity_expense">دفع كهرباء ومياه</option>
+<option value="bank_fees">عمولات بنكية</option>
+<option value="owner_capital">إيداع رأس مال</option>
+<option value="owner_withdrawal">مسحوبات شخصية</option>
+<option value="asset_purchase">شراء أصل ثابت</option>
+<option value="depreciation">إهلاك أصل ثابت</option>
+<option value="loan_received">الحصول على قرض</option>
+<option value="loan_payment">سداد قسط قرض</option>
+<option value="vat_payment">توريد ضريبة مبيعات</option>
 </select>
+
 <input id="amount" type="number" placeholder="المبلغ">
 <button class="send" onclick="makeEntry()">إنشاء القيد</button>
 </div>
+
 <div id="entryResult" class="card"></div>
 `);
 }
 
 function makeEntry(){
+let t = document.getElementById("entryType").value;
+let a = document.getElementById("amount").value || "____";
+let r = "";
+
+if(t=="cash_purchase") r=`من حـ/ المشتريات أو المخزون ${a}
+إلى حـ/ الصندوق ${a}`;
+
+if(t=="credit_purchase") r=`من حـ/ المشتريات أو المخزون ${a}
+إلى حـ/ الموردين ${a}`;
+
+if(t=="purchase_return") r=`من حـ/ الموردين أو الصندوق ${a}
+إلى حـ/ مردودات المشتريات ${a}`;
+
+if(t=="cash_sale") r=`من حـ/ الصندوق ${a}
+إلى حـ/ المبيعات ${a}`;
+
+if(t=="credit_sale") r=`من حـ/ العملاء ${a}
+إلى حـ/ المبيعات ${a}`;
+
+if(t=="sales_return") r=`من حـ/ مردودات المبيعات ${a}
+إلى حـ/ العملاء أو الصندوق ${a}`;
+
+if(t=="customer_collection") r=`من حـ/ الصندوق أو البنك ${a}
+إلى حـ/ العملاء ${a}`;
+
+if(t=="supplier_payment") r=`من حـ/ الموردين ${a}
+إلى حـ/ الصندوق أو البنك ${a}`;
+
+if(t=="rent_expense") r=`من حـ/ مصروف الإيجار ${a}
+إلى حـ/ الصندوق أو البنك ${a}`;
+
+if(t=="salary_expense") r=`من حـ/ مصروف الرواتب والأجور ${a}
+إلى حـ/ البنك أو الصندوق ${a}`;
+
+if(t=="electricity_expense") r=`من حـ/ مصروف الكهرباء والمياه ${a}
+إلى حـ/ الصندوق أو البنك ${a}`;
+
+if(t=="bank_fees") r=`من حـ/ مصاريف وعمولات بنكية ${a}
+إلى حـ/ البنك ${a}`;
+
+if(t=="owner_capital") r=`من حـ/ الصندوق أو البنك ${a}
+إلى حـ/ رأس المال ${a}`;
+
+if(t=="owner_withdrawal") r=`من حـ/ مسحوبات شخصية ${a}
+إلى حـ/ الصندوق أو البنك ${a}`;
+
+if(t=="asset_purchase") r=`من حـ/ الأصول الثابتة ${a}
+إلى حـ/ الصندوق أو البنك أو الموردين ${a}`;
+
+if(t=="depreciation") r=`من حـ/ مصروف الإهلاك ${a}
+إلى حـ/ مجمع الإهلاك ${a}`;
+
+if(t=="loan_received") r=`من حـ/ البنك ${a}
+إلى حـ/ قرض بنكي ${a}`;
+
+if(t=="loan_payment") r=`من حـ/ قرض بنكي ${a}
+إلى حـ/ البنك ${a}`;
+
+if(t=="vat_payment") r=`من حـ/ ضريبة المبيعات المستحقة ${a}
+إلى حـ/ البنك ${a}`;
+
+document.getElementById("entryResult").innerText = r;
+}
+  function makeEntry(){
 let t=document.getElementById("entryType").value;
 let a=document.getElementById("amount").value || "____";
 let r="";
