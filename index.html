@@ -1,163 +1,232 @@
 <!DOCTYPE html>
-
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>مساعد صرح المحاسبي الذكي</title>
-
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Tahoma,sans-serif;
-}
-
-body{
-background:#f4f6f9;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-}
-
-.container{
-width:95%;
-max-width:1000px;
-height:90vh;
-background:white;
-border-radius:20px;
-overflow:hidden;
-box-shadow:0 0 20px rgba(0,0,0,.1);
-display:flex;
-flex-direction:column;
-}
-
-.header{
-background:#0f172a;
-color:white;
-padding:20px;
-text-align:center;
-}
-
-.header h1{
-margin-bottom:5px;
-}
-
-.chat{
-flex:1;
-overflow-y:auto;
-padding:20px;
-background:#f8fafc;
-}
-
-.message{
-max-width:80%;
-padding:12px 15px;
-border-radius:15px;
-margin-bottom:15px;
-line-height:1.8;
-}
-
-.user{
-background:#dbeafe;
-margin-right:auto;
-}
-
-.bot{
-background:white;
-border:1px solid #ddd;
-margin-left:auto;
-}
-
-.input-area{
-display:flex;
-gap:10px;
-padding:15px;
-border-top:1px solid #eee;
-}
-
-input{
-flex:1;
-padding:15px;
-border:1px solid #ccc;
-border-radius:10px;
-font-size:16px;
-}
-
-button{
-background:#0f172a;
-color:white;
-border:none;
-padding:15px 25px;
-border-radius:10px;
-cursor:pointer;
-}
-
-button:hover{
-opacity:.9;
-}
+body{margin:0;font-family:Tahoma,Arial;background:#f4f6f9;color:#111}
+.app{max-width:1100px;margin:20px auto;background:white;border-radius:18px;overflow:hidden;box-shadow:0 5px 25px #0002}
+.header{background:#0f172a;color:white;padding:25px;text-align:center}
+.header h1{margin:0;font-size:30px}
+.header p{color:#cbd5e1}
+.main{display:grid;grid-template-columns:280px 1fr;min-height:650px}
+.side{background:#f8fafc;border-left:1px solid #e5e7eb;padding:15px}
+.side button{display:block;width:100%;margin:8px 0;padding:13px;border:0;border-radius:10px;background:#e2e8f0;cursor:pointer;text-align:right;font-size:15px}
+.side button:hover{background:#cbd5e1}
+.content{padding:20px}
+.chat{height:450px;overflow:auto;background:#f8fafc;border:1px solid #e5e7eb;border-radius:15px;padding:15px}
+.msg{padding:12px 15px;border-radius:12px;margin:10px 0;line-height:1.8;white-space:pre-wrap}
+.user{background:#dbeafe;margin-right:20%}
+.bot{background:white;border:1px solid #ddd;margin-left:20%}
+.input{display:flex;gap:10px;margin-top:12px}
+input,textarea,select{padding:13px;border:1px solid #cbd5e1;border-radius:10px;font-size:15px}
+input{flex:1}
+button.send{background:#0f172a;color:white;border:0;border-radius:10px;padding:13px 25px;cursor:pointer}
+.card{background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:15px;margin:12px 0;line-height:1.9}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.small{color:#64748b;font-size:13px}
 </style>
-
 </head>
-
 <body>
 
-<div class="container">
-
+<div class="app">
 <div class="header">
 <h1>مساعد صرح المحاسبي الذكي</h1>
-<p>استفسر عن القيود المحاسبية والرواتب والضرائب والقوائم المالية</p>
+<p>مساعد مجاني للأعمال المحاسبية العملية بدون API</p>
 </div>
 
-<div class="chat" id="chat">
-
-<div class="message bot">
-مرحباً بك 👋<br>
-أنا مساعد صرح المحاسبي الذكي.
-كيف يمكنني مساعدتك اليوم؟
+<div class="main">
+<div class="side">
+<button onclick="showHome()">الرئيسية</button>
+<button onclick="showJournal()">مولد القيود المحاسبية</button>
+<button onclick="showAccounts()">شجرة الحسابات</button>
+<button onclick="showSalary()">حاسبة الرواتب</button>
+<button onclick="showSalesTax()">حاسبة ضريبة المبيعات</button>
+<button onclick="showBank()">مذكرة تسوية البنك</button>
+<button onclick="showFAQ()">أسئلة محاسبية جاهزة</button>
 </div>
 
+<div class="content" id="content"></div>
 </div>
-
-<div class="input-area">
-<input id="question" placeholder="اكتب سؤالك المحاسبي هنا">
-<button onclick="sendMessage()">إرسال</button>
-</div>
-
 </div>
 
 <script>
+const answers = {
+"شراء بضاعة نقدا": "القيد:\nمن حـ/ المخزون أو المشتريات\nإلى حـ/ الصندوق\n\nالشرح: تم شراء بضاعة وتم الدفع نقداً.",
+"شراء بضاعة على الحساب": "القيد:\nمن حـ/ المخزون أو المشتريات\nإلى حـ/ الموردين\n\nالشرح: تم شراء بضاعة ولم يتم الدفع مباشرة.",
+"بيع نقدي": "القيد:\nمن حـ/ الصندوق\nإلى حـ/ المبيعات\nإلى حـ/ ضريبة المبيعات المستحقة إن وجدت",
+"بيع على الحساب": "القيد:\nمن حـ/ العملاء\nإلى حـ/ المبيعات\nإلى حـ/ ضريبة المبيعات المستحقة إن وجدت",
+"تحصيل من عميل": "القيد:\nمن حـ/ الصندوق أو البنك\nإلى حـ/ العملاء",
+"دفع لمورد": "القيد:\nمن حـ/ الموردين\nإلى حـ/ الصندوق أو البنك",
+"مصروف ايجار": "القيد:\nمن حـ/ مصروف الإيجار\nإلى حـ/ الصندوق أو البنك",
+"راتب": "قيد الرواتب غالباً:\nمن حـ/ مصروف الرواتب والأجور\nإلى حـ/ اقتطاعات الضمان\nإلى حـ/ ضريبة الدخل على الرواتب إن وجدت\nإلى حـ/ البنك أو الصندوق",
+"تسوية البنك": "مذكرة تسوية البنك تقارن بين رصيد البنك في الدفاتر ورصيد كشف البنك، ويتم تعديل الفروقات مثل الشيكات غير المصروفة، الإيداعات بالطريق، العمولات البنكية، والفوائد.",
+"شجرة الحسابات": "شجرة الحسابات الأساسية:\n1 الأصول\n2 الالتزامات\n3 حقوق الملكية\n4 الإيرادات\n5 المصروفات"
+};
 
-function sendMessage(){
+function layout(title, html){
+document.getElementById("content").innerHTML = `<h2>${title}</h2>${html}`;
+}
 
-let input=document.getElementById("question");
+function showHome(){
+layout("الرئيسية", `
+<div class="chat" id="chat">
+<div class="msg bot">أهلاً بك 👋
+اكتب سؤالك المحاسبي، مثل:
+- شراء بضاعة نقداً
+- بيع على الحساب
+- قيد الرواتب
+- تسوية البنك
+- شجرة الحسابات</div>
+</div>
+<div class="input">
+<input id="q" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter') ask()">
+<button class="send" onclick="ask()">إرسال</button>
+</div>
+<p class="small">ملاحظة: هذه نسخة تعليمية مجانية تعتمد على قاعدة معرفة جاهزة وليست استشارة قانونية أو ضريبية نهائية.</p>
+`);
+}
 
-let text=input.value.trim();
-
-if(text==="") return;
-
+function ask(){
+let q=document.getElementById("q").value.trim();
+if(!q)return;
 let chat=document.getElementById("chat");
-
-chat.innerHTML += `
-<div class="message user">
-${text}
-</div>
-`;
-
-chat.innerHTML += `
-<div class="message bot">
-شكراً لسؤالك.<br>
-سيتم ربط هذه النسخة بالذكاء الاصطناعي لاحقاً.
-</div>
-`;
-
-input.value="";
-
+chat.innerHTML += `<div class="msg user">${q}</div>`;
+let reply="لم أجد إجابة دقيقة. جرّب كلمات مثل: شراء بضاعة، بيع نقدي، راتب، تسوية البنك، شجرة الحسابات.";
+for(let key in answers){
+if(q.includes(key) || key.includes(q)){reply=answers[key];break;}
+}
+chat.innerHTML += `<div class="msg bot">${reply}</div>`;
+document.getElementById("q").value="";
 chat.scrollTop=chat.scrollHeight;
 }
 
+function showJournal(){
+layout("مولد القيود المحاسبية", `
+<div class="card">
+<select id="entryType">
+<option value="cash_purchase">شراء بضاعة نقداً</option>
+<option value="credit_purchase">شراء بضاعة على الحساب</option>
+<option value="cash_sale">بيع نقدي</option>
+<option value="credit_sale">بيع على الحساب</option>
+<option value="collection">تحصيل من عميل</option>
+<option value="payment">دفع لمورد</option>
+<option value="expense">دفع مصروف</option>
+</select>
+<input id="amount" type="number" placeholder="المبلغ">
+<button class="send" onclick="makeEntry()">إنشاء القيد</button>
+</div>
+<div id="entryResult" class="card"></div>
+`);
+}
+
+function makeEntry(){
+let t=document.getElementById("entryType").value;
+let a=document.getElementById("amount").value || "____";
+let r="";
+if(t=="cash_purchase") r=`من حـ/ المخزون أو المشتريات ${a}\nإلى حـ/ الصندوق ${a}`;
+if(t=="credit_purchase") r=`من حـ/ المخزون أو المشتريات ${a}\nإلى حـ/ الموردين ${a}`;
+if(t=="cash_sale") r=`من حـ/ الصندوق ${a}\nإلى حـ/ المبيعات ${a}`;
+if(t=="credit_sale") r=`من حـ/ العملاء ${a}\nإلى حـ/ المبيعات ${a}`;
+if(t=="collection") r=`من حـ/ الصندوق أو البنك ${a}\nإلى حـ/ العملاء ${a}`;
+if(t=="payment") r=`من حـ/ الموردين ${a}\nإلى حـ/ الصندوق أو البنك ${a}`;
+if(t=="expense") r=`من حـ/ المصروف ${a}\nإلى حـ/ الصندوق أو البنك ${a}`;
+document.getElementById("entryResult").innerText=r;
+}
+
+function showAccounts(){
+layout("شجرة الحسابات", `
+<div class="grid">
+<div class="card"><h3>1 الأصول</h3>الصندوق<br>البنك<br>العملاء<br>المخزون<br>الأثاث والمعدات</div>
+<div class="card"><h3>2 الالتزامات</h3>الموردون<br>القروض<br>ضريبة المبيعات المستحقة<br>مستحقات الضمان</div>
+<div class="card"><h3>3 حقوق الملكية</h3>رأس المال<br>الأرباح المحتجزة<br>جاري الشركاء</div>
+<div class="card"><h3>4 الإيرادات</h3>المبيعات<br>إيرادات خدمات<br>مردودات ومسموحات المبيعات</div>
+<div class="card"><h3>5 المصروفات</h3>رواتب<br>إيجار<br>كهرباء ومياه<br>مصاريف بنكية<br>دعاية وإعلان</div>
+</div>
+`);
+}
+
+function showSalary(){
+layout("حاسبة الرواتب", `
+<div class="card">
+<input id="basic" type="number" placeholder="الراتب الإجمالي">
+<input id="ded" type="number" placeholder="اقتطاعات أخرى">
+<button class="send" onclick="calcSalary()">احسب</button>
+</div>
+<div id="salaryResult" class="card"></div>
+<p class="small">النسب هنا تعليمية ويمكن تعديلها حسب القانون والتعليمات المعمول بها.</p>
+`);
+}
+
+function calcSalary(){
+let basic=Number(document.getElementById("basic").value||0);
+let ded=Number(document.getElementById("ded").value||0);
+let social=basic*0.075;
+let net=basic-social-ded;
+document.getElementById("salaryResult").innerText=
+`الراتب الإجمالي: ${basic.toFixed(2)}
+اقتطاع ضمان تقديري 7.5%: ${social.toFixed(2)}
+اقتطاعات أخرى: ${ded.toFixed(2)}
+صافي الراتب: ${net.toFixed(2)}`;
+}
+
+function showSalesTax(){
+layout("حاسبة ضريبة المبيعات", `
+<div class="card">
+<input id="taxAmount" type="number" placeholder="المبلغ قبل الضريبة">
+<input id="taxRate" type="number" value="16" placeholder="نسبة الضريبة">
+<button class="send" onclick="calcTax()">احسب</button>
+</div>
+<div id="taxResult" class="card"></div>
+`);
+}
+
+function calcTax(){
+let a=Number(document.getElementById("taxAmount").value||0);
+let r=Number(document.getElementById("taxRate").value||0);
+let tax=a*r/100;
+document.getElementById("taxResult").innerText=
+`المبلغ قبل الضريبة: ${a.toFixed(2)}
+ضريبة المبيعات: ${tax.toFixed(2)}
+الإجمالي بعد الضريبة: ${(a+tax).toFixed(2)}`;
+}
+
+function showBank(){
+layout("مذكرة تسوية البنك", `
+<div class="card">
+<input id="book" type="number" placeholder="رصيد البنك حسب الدفاتر">
+<input id="fees" type="number" placeholder="عمولات بنكية">
+<input id="interest" type="number" placeholder="فوائد أو إيداعات غير مسجلة">
+<button class="send" onclick="calcBank()">احسب الرصيد المعدل</button>
+</div>
+<div id="bankResult" class="card"></div>
+`);
+}
+
+function calcBank(){
+let book=Number(document.getElementById("book").value||0);
+let fees=Number(document.getElementById("fees").value||0);
+let interest=Number(document.getElementById("interest").value||0);
+let adjusted=book-fees+interest;
+document.getElementById("bankResult").innerText=
+`رصيد البنك حسب الدفاتر: ${book.toFixed(2)}
+ناقص العمولات البنكية: ${fees.toFixed(2)}
+زائد فوائد/إيداعات غير مسجلة: ${interest.toFixed(2)}
+الرصيد المعدل: ${adjusted.toFixed(2)}`;
+}
+
+function showFAQ(){
+layout("أسئلة محاسبية جاهزة", `
+<div class="card"><b>ما هو القيد المحاسبي؟</b><br>هو تسجيل مالي يوضح الطرف المدين والطرف الدائن للعملية المالية.</div>
+<div class="card"><b>ما الفرق بين العميل والمورد؟</b><br>العميل شخص أو شركة نبيع لها، والمورد شخص أو شركة نشتري منها.</div>
+<div class="card"><b>ما الهدف من شجرة الحسابات؟</b><br>تنظيم الحسابات لتسهيل تسجيل العمليات وإعداد التقارير المالية.</div>
+<div class="card"><b>ما هي مذكرة تسوية البنك؟</b><br>كشف يوضح الفروقات بين رصيد البنك في الدفاتر ورصيد كشف البنك.</div>
+<div class="card"><b>ما هي القوائم المالية الأساسية؟</b><br>قائمة الدخل، قائمة المركز المالي، قائمة التدفقات النقدية، وقائمة التغيرات في حقوق الملكية.</div>
+`);
+}
+
+showHome();
 </script>
 
 </body>
