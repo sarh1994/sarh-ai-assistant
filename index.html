@@ -232,7 +232,12 @@ layout("حاسبة ضريبة الدخل الأردني", `
 
 <div class="card">
 
-<input id="income" type="number" placeholder="الدخل السنوي بالدينار">
+<select id="incomeType">
+<option value="annual">دخل سنوي</option>
+<option value="monthly">دخل شهري</option>
+</select>
+
+<input id="income" type="number" placeholder="أدخل الدخل بالدينار">
 
 <button class="send" onclick="calculateIncomeTax()">
 احسب الضريبة
@@ -249,10 +254,16 @@ layout("حاسبة ضريبة الدخل الأردني", `
 function calculateIncomeTax(){
 
 let income = Number(document.getElementById("income").value || 0);
+let incomeType = document.getElementById("incomeType").value;
+
+let annualIncome = income;
+
+if(incomeType === "monthly"){
+annualIncome = income * 12;
+}
 
 let exemption = 9000;
-
-let taxableIncome = income - exemption;
+let taxableIncome = annualIncome - exemption;
 
 if(taxableIncome < 0){
 taxableIncome = 0;
@@ -268,20 +279,25 @@ tax = 5000 * 0.05;
 tax += (taxableIncome - 5000) * 0.10;
 }
 
+let monthlyTax = tax / 12;
+
 document.getElementById("taxResult").innerHTML = `
 <h3>النتيجة</h3>
 
-الدخل السنوي: ${income.toFixed(2)} دينار<br>
+نوع الدخل: ${incomeType === "monthly" ? "شهري" : "سنوي"}<br>
+
+الدخل السنوي المحتسب: ${annualIncome.toFixed(2)} دينار<br>
 
 الإعفاء الشخصي: ${exemption.toFixed(2)} دينار<br>
 
 الدخل الخاضع للضريبة: ${taxableIncome.toFixed(2)} دينار<br>
 
-ضريبة الدخل التقديرية: ${tax.toFixed(2)} دينار
+ضريبة الدخل السنوية التقديرية: ${tax.toFixed(2)} دينار<br>
+
+ضريبة الدخل الشهرية التقديرية: ${monthlyTax.toFixed(2)} دينار
 `;
 
-}
-showHome();
+}showHome();
 </script>
 
 </body>
