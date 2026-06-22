@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مساعد صرح المحاسبي الذكي</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Tahoma,sans-serif;
+}
+
+body{
+background:#f4f6f9;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.container{
+width:95%;
+max-width:1000px;
+height:90vh;
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 0 20px rgba(0,0,0,.1);
+display:flex;
+flex-direction:column;
+}
+
+.header{
+background:#0f172a;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+.header h1{
+margin-bottom:5px;
+}
+
+.chat{
+flex:1;
+overflow-y:auto;
+padding:20px;
+background:#f8fafc;
+}
+
+.message{
+max-width:80%;
+padding:12px 15px;
+border-radius:15px;
+margin-bottom:15px;
+line-height:1.8;
+}
+
+.user{
+background:#dbeafe;
+margin-right:auto;
+}
+
+.bot{
+background:white;
+border:1px solid #ddd;
+margin-left:auto;
+}
+
+.input-area{
+display:flex;
+gap:10px;
+padding:15px;
+border-top:1px solid #eee;
+}
+
+input{
+flex:1;
+padding:15px;
+border:1px solid #ccc;
+border-radius:10px;
+font-size:16px;
+}
+
+button{
+background:#0f172a;
+color:white;
+border:none;
+padding:15px 25px;
+border-radius:10px;
+cursor:pointer;
+}
+
+button:hover{
+opacity:.9;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>مساعد صرح المحاسبي الذكي</h1>
+<p>استفسر عن القيود المحاسبية والرواتب والضرائب والقوائم المالية</p>
+</div>
+
+<div class="chat" id="chat">
+
+<div class="message bot">
+مرحباً بك 👋<br>
+أنا مساعد صرح المحاسبي الذكي.
+كيف يمكنني مساعدتك اليوم؟
+</div>
+
+</div>
+
+<div class="input-area">
+<input id="question" placeholder="اكتب سؤالك المحاسبي هنا">
+<button onclick="sendMessage()">إرسال</button>
+</div>
+
+</div>
+
+<script>
+
+function sendMessage(){
+
+let input=document.getElementById("question");
+
+let text=input.value.trim();
+
+if(text==="") return;
+
+let chat=document.getElementById("chat");
+
+chat.innerHTML += `
+<div class="message user">
+${text}
+</div>
+`;
+
+chat.innerHTML += `
+<div class="message bot">
+شكراً لسؤالك.<br>
+سيتم ربط هذه النسخة بالذكاء الاصطناعي لاحقاً.
+</div>
+`;
+
+input.value="";
+
+chat.scrollTop=chat.scrollHeight;
+}
+
+</script>
+
+</body>
+</html>
