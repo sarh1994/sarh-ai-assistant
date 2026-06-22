@@ -4,378 +4,624 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>مساعد صرح المحاسبي الذكي</title>
+
 <style>
-body{margin:0;font-family:Tahoma,Arial;background:#f4f6f9;color:#111}
-.app{max-width:1100px;margin:20px auto;background:white;border-radius:18px;overflow:hidden;box-shadow:0 5px 25px #0002}
-.header{background:#0f172a;color:white;padding:25px;text-align:center}
-.header h1{margin:0;font-size:30px}
-.header p{color:#cbd5e1}
-.main{display:grid;grid-template-columns:280px 1fr;min-height:650px}
-.side{background:#f8fafc;border-left:1px solid #e5e7eb;padding:15px}
-.side button{display:block;width:100%;margin:8px 0;padding:13px;border:0;border-radius:10px;background:#e2e8f0;cursor:pointer;text-align:right;font-size:15px}
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Tahoma,Arial,sans-serif;
+background:linear-gradient(135deg,#7f1d1d,#991b1b);
+  color:#111827
+}
+.app{
+max-width:1250px;
+margin:20px auto;
+background:#fff;
+border-radius:24px;
+overflow:hidden;
+box-shadow:0 20px 50px rgba(0,0,0,.35)
+}
+.header{
+background:linear-gradient(135deg,#7f1d1d,#991b1b);
+  color:white;
+padding:28px;
+text-align:center
+}
+.header h1{margin:0;font-size:34px}
+.header p{margin:10px 0 0;color:#cbd5e1}
+.main{
+display:grid;
+grid-template-columns:300px 1fr;
+min-height:720px
+}
+.side{
+background:#f8fafc;
+border-left:1px solid #e5e7eb;
+padding:18px
+}
+.side button{
+display:block;
+width:100%;
+margin:8px 0;
+padding:14px;
+border:0;
+border-radius:14px;
+background:#e2e8f0;
+cursor:pointer;
+text-align:right;
+font-size:15px
+}
 .side button:hover{background:#cbd5e1}
-.content{padding:20px}
-.chat{height:450px;overflow:auto;background:#f8fafc;border:1px solid #e5e7eb;border-radius:15px;padding:15px}
-.msg{padding:12px 15px;border-radius:12px;margin:10px 0;line-height:1.8;white-space:pre-wrap}
-.user{background:#dbeafe;margin-right:20%}
-.bot{background:white;border:1px solid #ddd;margin-left:20%}
-.input{display:flex;gap:10px;margin-top:12px}
-input,textarea,select{padding:13px;border:1px solid #cbd5e1;border-radius:10px;font-size:15px}
-input{flex:1}
-button.send{background:#0f172a;color:white;border:0;border-radius:10px;padding:13px 25px;cursor:pointer}
-.card{background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:15px;margin:12px 0;line-height:1.9}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.content{padding:24px}
+.card{
+background:#f8fafc;
+border:1px solid #e5e7eb;
+border-radius:18px;
+padding:18px;
+margin:14px 0;
+line-height:1.9
+}
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:14px
+}
+input,select,textarea{
+width:100%;
+padding:13px;
+border:1px solid #cbd5e1;
+border-radius:12px;
+font-size:15px;
+margin:6px 0
+}
+button.send{
+background:#991b1b;
+  color:white;
+border:0;
+border-radius:12px;
+padding:13px 22px;
+cursor:pointer;
+margin-top:8px
+}
+button.send:hover{background:#1e293b}
+.result{
+background:white;
+border:1px solid #cbd5e1;
+border-radius:15px;
+padding:18px;
+white-space:pre-wrap;
+line-height:1.9
+}
+.badge{
+display:inline-block;
+background:#dbeafe;
+color:#1e3a8a;
+padding:6px 10px;
+border-radius:999px;
+font-size:13px;
+margin:4px
+}
 .small{color:#64748b;font-size:13px}
+.chat{
+height:430px;
+overflow:auto;
+background:#f8fafc;
+border:1px solid #e5e7eb;
+border-radius:18px;
+padding:15px
+}
+.msg{
+padding:13px 15px;
+border-radius:15px;
+margin:10px 0;
+line-height:1.8;
+white-space:pre-wrap
+}
+.user{background:#dbeafe;margin-right:22%}
+.bot{background:white;border:1px solid #ddd;margin-left:22%}
+.input-row{display:flex;gap:10px;margin-top:12px}
+.input-row input{flex:1}
+.table{
+width:100%;
+border-collapse:collapse;
+background:white;
+border-radius:12px;
+overflow:hidden
+}
+.table th,.table td{
+border:1px solid #e5e7eb;
+padding:10px;
+text-align:right
+}
+.table th{background:#e2e8f0}
+@media(max-width:850px){
+.main{grid-template-columns:1fr}
+.side{border-left:0;border-bottom:1px solid #e5e7eb}
+}
 </style>
 </head>
+
 <body>
 
 <div class="app">
 <div class="header">
-<h1>مساعد صرح المحاسبي الذكي</h1>
-<p>مساعد مجاني للأعمال المحاسبية العملية </p>
+<h1>مساعد صرح المحاسبي الذكي Pro</h1>
+<p>منصة تدريب محاسبي مجانية: قيود، ضرائب، رواتب، تسويات، تحليل مالي، وشجرة حسابات</p>
 </div>
 
 <div class="main">
+
 <div class="side">
 <button onclick="showHome()">الرئيسية</button>
-<button onclick="showJournal()">مولد القيود المحاسبية</button>
-<button onclick="showAccounts()">شجرة الحسابات</button>
-<button onclick="showSalary()">حاسبة الرواتب</button>
+<button onclick="showDailyAssistant()">مساعد المحاسب اليومي</button>
+<button onclick="showJournal()">مولد القيود المحاسبية Pro</button>
+<button onclick="showAccounts()">شجرة الحسابات الذكية</button>
+<button onclick="showSalary()">حاسبة الرواتب والضمان</button>
+<button onclick="showIncomeTax()">حاسبة ضريبة الدخل للأفراد</button>
 <button onclick="showSalesTax()">حاسبة ضريبة المبيعات</button>
-  <button onclick="showIncomeTax()">حاسبة ضريبة الدخل</button>
 <button onclick="showBank()">مذكرة تسوية البنك</button>
-<button onclick="showFAQ()">أسئلة محاسبية جاهزة</button>
+<button onclick="showFinancialAnalysis()">التحليل المالي</button>
+<button onclick="showCompanySetup()">تأسيس شركة محاسبياً</button>
+<button onclick="showTraining()">تدريب عملي</button>
+<button onclick="showFAQ()">بنك الأسئلة</button>
 </div>
 
 <div class="content" id="content"></div>
+
 </div>
 </div>
 
 <script>
-const answers = {
-"شراء بضاعة نقدا": "القيد:\nمن حـ/ المخزون أو المشتريات\nإلى حـ/ الصندوق\n\nالشرح: تم شراء بضاعة وتم الدفع نقداً.",
-"شراء بضاعة على الحساب": "القيد:\nمن حـ/ المخزون أو المشتريات\nإلى حـ/ الموردين\n\nالشرح: تم شراء بضاعة ولم يتم الدفع مباشرة.",
-"بيع نقدي": "القيد:\nمن حـ/ الصندوق\nإلى حـ/ المبيعات\nإلى حـ/ ضريبة المبيعات المستحقة إن وجدت",
-"بيع على الحساب": "القيد:\nمن حـ/ العملاء\nإلى حـ/ المبيعات\nإلى حـ/ ضريبة المبيعات المستحقة إن وجدت",
-"تحصيل من عميل": "القيد:\nمن حـ/ الصندوق أو البنك\nإلى حـ/ العملاء",
-"دفع لمورد": "القيد:\nمن حـ/ الموردين\nإلى حـ/ الصندوق أو البنك",
-"مصروف ايجار": "القيد:\nمن حـ/ مصروف الإيجار\nإلى حـ/ الصندوق أو البنك",
-"راتب": "قيد الرواتب غالباً:\nمن حـ/ مصروف الرواتب والأجور\nإلى حـ/ اقتطاعات الضمان\nإلى حـ/ ضريبة الدخل على الرواتب إن وجدت\nإلى حـ/ البنك أو الصندوق",
-"تسوية البنك": "مذكرة تسوية البنك تقارن بين رصيد البنك في الدفاتر ورصيد كشف البنك، ويتم تعديل الفروقات مثل الشيكات غير المصروفة، الإيداعات بالطريق، العمولات البنكية، والفوائد.",
-"شجرة الحسابات": "شجرة الحسابات الأساسية:\n1 الأصول\n2 الالتزامات\n3 حقوق الملكية\n4 الإيرادات\n5 المصروفات"
-};
-
 function layout(title, html){
 document.getElementById("content").innerHTML = `<h2>${title}</h2>${html}`;
 }
 
+/* الرئيسية */
 function showHome(){
-layout("الرئيسية", `
-<div class="chat" id="chat">
-<div class="msg bot">أهلاً بك 👋
-اكتب سؤالك المحاسبي، مثل:
-- شراء بضاعة نقداً
-- بيع على الحساب
-- قيد الرواتب
-- تسوية البنك
-- شجرة الحسابات</div>
+layout("لوحة التحكم الرئيسية", `
+<div class="grid">
+<div class="card"><h3>📘 القيود المحاسبية</h3>مولد قيود متقدم لمبيعات، مشتريات، رواتب، بنوك، شيكات، أصول، قروض، ضرائب.</div>
+<div class="card"><h3>💰 الضرائب والرواتب</h3>حاسبة ضريبة دخل أفراد، ضريبة مبيعات، صافي راتب، وضمان اجتماعي.</div>
+<div class="card"><h3>🏦 البنوك والتسويات</h3>إعداد مذكرة تسوية بنك مع الفروقات والرصيد المعدل.</div>
+<div class="card"><h3>📊 التحليل المالي</h3>نسب السيولة، الربحية، المديونية، وهامش الربح.</div>
 </div>
-<div class="input">
-<input id="q" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter') ask()">
-<button class="send" onclick="ask()">إرسال</button>
+
+<div class="card">
+<span class="badge">مجاني 100%</span>
+<span class="badge">بدون API</span>
+<span class="badge">يعمل على GitHub Pages</span>
+<span class="badge">مناسب لدورة المحاسبة العملية</span>
 </div>
-<p class="small">ملاحظة: هذه نسخة تعليمية مجانية تعتمد على قاعدة معرفة جاهزة وليست استشارة قانونية أو ضريبية نهائية.</p>
 `);
 }
 
-function ask(){
-let q=document.getElementById("q").value.trim();
+/* مساعد يومي */
+const smartEntries = [
+{keys:["شراء بضاعة نقدا","اشتريت بضاعة نقدا","شراء نقدي"],ans:"من حـ/ المشتريات أو المخزون\nإلى حـ/ الصندوق\n\nالشرح: شراء بضاعة وتم الدفع نقداً."},
+{keys:["شراء بضاعة على الحساب","اشتريت بضاعة على الحساب","شراء آجل"],ans:"من حـ/ المشتريات أو المخزون\nإلى حـ/ الموردين\n\nالشرح: شراء بضاعة من المورد ولم يتم الدفع فوراً."},
+{keys:["بيع نقدي","بعت نقدا","مبيعات نقدية"],ans:"من حـ/ الصندوق\nإلى حـ/ المبيعات\nإلى حـ/ ضريبة المبيعات المستحقة إن وجدت"},
+{keys:["بيع على الحساب","مبيعات آجلة","بعت على الحساب"],ans:"من حـ/ العملاء\nإلى حـ/ المبيعات\nإلى حـ/ ضريبة المبيعات المستحقة إن وجدت"},
+{keys:["تحصيل من عميل","قبض من عميل","استلام من عميل"],ans:"من حـ/ الصندوق أو البنك\nإلى حـ/ العملاء"},
+{keys:["دفع لمورد","سداد مورد","دفعت لمورد"],ans:"من حـ/ الموردين\nإلى حـ/ الصندوق أو البنك"},
+{keys:["راتب","رواتب","قيد الرواتب"],ans:"من حـ/ مصروف الرواتب والأجور\nإلى حـ/ اقتطاعات الضمان الاجتماعي\nإلى حـ/ ضريبة الدخل على الرواتب إن وجدت\nإلى حـ/ البنك أو الصندوق"},
+{keys:["ايجار","إيجار","دفع ايجار"],ans:"من حـ/ مصروف الإيجار\nإلى حـ/ الصندوق أو البنك"},
+{keys:["استهلاك","اهلاك","إهلاك"],ans:"من حـ/ مصروف الإهلاك\nإلى حـ/ مجمع الإهلاك"},
+{keys:["عمولة بنك","عمولات بنكية","مصاريف بنك"],ans:"من حـ/ مصاريف وعمولات بنكية\nإلى حـ/ البنك"}
+];
+
+function showDailyAssistant(){
+layout("مساعد المحاسب اليومي", `
+<div class="chat" id="chat">
+<div class="msg bot">اكتب العملية المالية بلغة بسيطة، وأنا أعطيك القيد المناسب.
+مثال: اشتريت بضاعة نقداً بقيمة 5000 دينار</div>
+</div>
+<div class="input-row">
+<input id="dailyQ" placeholder="اكتب العملية هنا..." onkeydown="if(event.key==='Enter') dailyAsk()">
+<button class="send" onclick="dailyAsk()">تحليل العملية</button>
+</div>
+<p class="small">هذه أداة تدريبية تعتمد على كلمات مفتاحية بدون API.</p>
+`);
+}
+
+function dailyAsk(){
+let q=document.getElementById("dailyQ").value.trim();
 if(!q)return;
 let chat=document.getElementById("chat");
-chat.innerHTML += `<div class="msg user">${q}</div>`;
-let reply="لم أجد إجابة دقيقة. جرّب كلمات مثل: شراء بضاعة، بيع نقدي، راتب، تسوية البنك، شجرة الحسابات.";
-for(let key in answers){
-if(q.includes(key) || key.includes(q)){reply=answers[key];break;}
+chat.innerHTML+=`<div class="msg user">${q}</div>`;
+let reply="لم أتعرف على العملية بدقة. جرّب كلمات مثل: شراء بضاعة، بيع نقدي، تحصيل من عميل، رواتب، إيجار، إهلاك.";
+for(let item of smartEntries){
+if(item.keys.some(k=>q.includes(k))){
+reply=item.ans;
+break;
 }
-chat.innerHTML += `<div class="msg bot">${reply}</div>`;
-document.getElementById("q").value="";
+}
+chat.innerHTML+=`<div class="msg bot">${reply}</div>`;
+document.getElementById("dailyQ").value="";
 chat.scrollTop=chat.scrollHeight;
 }
 
-function showJournal(){
-layout("مولد القيود المحاسبية", `
-<div class="card">
-<select id="entryType">
-<option value="cash_purchase">شراء بضاعة نقداً</option>
-<option value="credit_purchase">شراء بضاعة على الحساب</option>
-<option value="purchase_return">مردودات مشتريات</option>
-<option value="cash_sale">بيع نقدي</option>
-<option value="credit_sale">بيع على الحساب</option>
-<option value="sales_return">مردودات مبيعات</option>
-<option value="customer_collection">تحصيل من عميل</option>
-<option value="supplier_payment">دفع لمورد</option>
-<option value="rent_expense">دفع إيجار</option>
-<option value="salary_expense">قيد رواتب</option>
-<option value="electricity_expense">دفع كهرباء ومياه</option>
-<option value="bank_fees">عمولات بنكية</option>
-<option value="owner_capital">إيداع رأس مال</option>
-<option value="owner_withdrawal">مسحوبات شخصية</option>
-<option value="asset_purchase">شراء أصل ثابت</option>
-<option value="depreciation">إهلاك أصل ثابت</option>
-<option value="loan_received">الحصول على قرض</option>
-<option value="loan_payment">سداد قسط قرض</option>
-<option value="vat_payment">توريد ضريبة مبيعات</option>
-</select>
+/* مولد القيود */
+const entries = {
+cash_purchase:["شراء بضاعة نقداً","من حـ/ المشتريات أو المخزون {a}\nإلى حـ/ الصندوق {a}"],
+credit_purchase:["شراء بضاعة على الحساب","من حـ/ المشتريات أو المخزون {a}\nإلى حـ/ الموردين {a}"],
+purchase_return:["مردودات مشتريات","من حـ/ الموردين أو الصندوق {a}\nإلى حـ/ مردودات المشتريات {a}"],
+purchase_discount:["خصم مكتسب من مورد","من حـ/ الموردين {a}\nإلى حـ/ خصم مكتسب {a}"],
+cash_sale:["بيع نقدي","من حـ/ الصندوق {a}\nإلى حـ/ المبيعات {a}"],
+credit_sale:["بيع على الحساب","من حـ/ العملاء {a}\nإلى حـ/ المبيعات {a}"],
+sales_return:["مردودات مبيعات","من حـ/ مردودات المبيعات {a}\nإلى حـ/ العملاء أو الصندوق {a}"],
+sales_discount:["خصم مسموح للعميل","من حـ/ خصم مسموح {a}\nإلى حـ/ العملاء {a}"],
+customer_collection:["تحصيل من عميل","من حـ/ الصندوق أو البنك {a}\nإلى حـ/ العملاء {a}"],
+supplier_payment:["دفع لمورد","من حـ/ الموردين {a}\nإلى حـ/ الصندوق أو البنك {a}"],
+rent:["دفع إيجار","من حـ/ مصروف الإيجار {a}\nإلى حـ/ الصندوق أو البنك {a}"],
+electricity:["كهرباء ومياه","من حـ/ مصروف الكهرباء والمياه {a}\nإلى حـ/ الصندوق أو البنك {a}"],
+internet:["إنترنت واتصالات","من حـ/ مصروف الاتصالات والإنترنت {a}\nإلى حـ/ الصندوق أو البنك {a}"],
+salary:["قيد رواتب","من حـ/ مصروف الرواتب والأجور {a}\nإلى حـ/ البنك أو الصندوق {a}"],
+social_security:["اقتطاعات ضمان","من حـ/ مصروف الرواتب والأجور {a}\nإلى حـ/ أمانات الضمان الاجتماعي {a}"],
+bank_fees:["عمولات بنكية","من حـ/ مصاريف وعمولات بنكية {a}\nإلى حـ/ البنك {a}"],
+capital:["إيداع رأس مال","من حـ/ الصندوق أو البنك {a}\nإلى حـ/ رأس المال {a}"],
+withdrawal:["مسحوبات شخصية","من حـ/ مسحوبات شخصية {a}\nإلى حـ/ الصندوق أو البنك {a}"],
+asset_cash:["شراء أصل ثابت نقداً","من حـ/ الأصول الثابتة {a}\nإلى حـ/ الصندوق أو البنك {a}"],
+asset_credit:["شراء أصل ثابت على الحساب","من حـ/ الأصول الثابتة {a}\nإلى حـ/ الموردين {a}"],
+depreciation:["إهلاك أصل ثابت","من حـ/ مصروف الإهلاك {a}\nإلى حـ/ مجمع الإهلاك {a}"],
+loan_received:["الحصول على قرض","من حـ/ البنك {a}\nإلى حـ/ قرض بنكي {a}"],
+loan_payment:["سداد قرض","من حـ/ قرض بنكي {a}\nإلى حـ/ البنك {a}"],
+interest_expense:["فوائد قرض","من حـ/ مصروف فوائد {a}\nإلى حـ/ البنك أو فوائد مستحقة {a}"],
+vat_due:["إثبات ضريبة مبيعات مستحقة","من حـ/ العملاء أو الصندوق {a}\nإلى حـ/ ضريبة المبيعات المستحقة {a}"],
+vat_input:["ضريبة مدخلات","من حـ/ ضريبة مبيعات قابلة للخصم {a}\nإلى حـ/ الموردين أو الصندوق {a}"],
+vat_payment:["توريد ضريبة مبيعات","من حـ/ ضريبة المبيعات المستحقة {a}\nإلى حـ/ البنك {a}"],
+cheque_received:["استلام شيك من عميل","من حـ/ شيكات برسم التحصيل {a}\nإلى حـ/ العملاء {a}"],
+cheque_collected:["تحصيل شيك بالبنك","من حـ/ البنك {a}\nإلى حـ/ شيكات برسم التحصيل {a}"],
+cheque_paid:["إصدار شيك لمورد","من حـ/ الموردين {a}\nإلى حـ/ شيكات صادرة {a}"],
+bad_debt:["إعدام دين","من حـ/ ديون معدومة {a}\nإلى حـ/ العملاء {a}"],
+provision_debt:["تكوين مخصص ديون مشكوك فيها","من حـ/ مصروف ديون مشكوك فيها {a}\nإلى حـ/ مخصص ديون مشكوك فيها {a}"],
+inventory_adjustment:["تسوية نقص مخزون","من حـ/ تكلفة بضاعة مباعة أو خسائر مخزون {a}\nإلى حـ/ المخزون {a}"],
+closing_revenue:["إغلاق الإيرادات","من حـ/ الإيرادات {a}\nإلى حـ/ ملخص الدخل {a}"],
+closing_expense:["إغلاق المصروفات","من حـ/ ملخص الدخل {a}\nإلى حـ/ المصروفات {a}"]
+};
 
-<input id="amount" type="number" placeholder="المبلغ">
+function showJournal(){
+let options="";
+for(let key in entries){
+options+=`<option value="${key}">${entries[key][0]}</option>`;
+}
+layout("مولد القيود المحاسبية Pro", `
+<div class="card">
+<select id="entryType">${options}</select>
+<input id="amount" type="number" placeholder="المبلغ بالدينار">
 <button class="send" onclick="makeEntry()">إنشاء القيد</button>
 </div>
-
-<div id="entryResult" class="card"></div>
+<div id="entryResult" class="result">اختر نوع العملية وأدخل المبلغ.</div>
 `);
 }
 
 function makeEntry(){
-let t = document.getElementById("entryType").value;
-let a = document.getElementById("amount").value || "____";
-let r = "";
-
-if(t=="cash_purchase") r=`من حـ/ المشتريات أو المخزون ${a}
-إلى حـ/ الصندوق ${a}`;
-
-if(t=="credit_purchase") r=`من حـ/ المشتريات أو المخزون ${a}
-إلى حـ/ الموردين ${a}`;
-
-if(t=="purchase_return") r=`من حـ/ الموردين أو الصندوق ${a}
-إلى حـ/ مردودات المشتريات ${a}`;
-
-if(t=="cash_sale") r=`من حـ/ الصندوق ${a}
-إلى حـ/ المبيعات ${a}`;
-
-if(t=="credit_sale") r=`من حـ/ العملاء ${a}
-إلى حـ/ المبيعات ${a}`;
-
-if(t=="sales_return") r=`من حـ/ مردودات المبيعات ${a}
-إلى حـ/ العملاء أو الصندوق ${a}`;
-
-if(t=="customer_collection") r=`من حـ/ الصندوق أو البنك ${a}
-إلى حـ/ العملاء ${a}`;
-
-if(t=="supplier_payment") r=`من حـ/ الموردين ${a}
-إلى حـ/ الصندوق أو البنك ${a}`;
-
-if(t=="rent_expense") r=`من حـ/ مصروف الإيجار ${a}
-إلى حـ/ الصندوق أو البنك ${a}`;
-
-if(t=="salary_expense") r=`من حـ/ مصروف الرواتب والأجور ${a}
-إلى حـ/ البنك أو الصندوق ${a}`;
-
-if(t=="electricity_expense") r=`من حـ/ مصروف الكهرباء والمياه ${a}
-إلى حـ/ الصندوق أو البنك ${a}`;
-
-if(t=="bank_fees") r=`من حـ/ مصاريف وعمولات بنكية ${a}
-إلى حـ/ البنك ${a}`;
-
-if(t=="owner_capital") r=`من حـ/ الصندوق أو البنك ${a}
-إلى حـ/ رأس المال ${a}`;
-
-if(t=="owner_withdrawal") r=`من حـ/ مسحوبات شخصية ${a}
-إلى حـ/ الصندوق أو البنك ${a}`;
-
-if(t=="asset_purchase") r=`من حـ/ الأصول الثابتة ${a}
-إلى حـ/ الصندوق أو البنك أو الموردين ${a}`;
-
-if(t=="depreciation") r=`من حـ/ مصروف الإهلاك ${a}
-إلى حـ/ مجمع الإهلاك ${a}`;
-
-if(t=="loan_received") r=`من حـ/ البنك ${a}
-إلى حـ/ قرض بنكي ${a}`;
-
-if(t=="loan_payment") r=`من حـ/ قرض بنكي ${a}
-إلى حـ/ البنك ${a}`;
-
-if(t=="vat_payment") r=`من حـ/ ضريبة المبيعات المستحقة ${a}
-إلى حـ/ البنك ${a}`;
-
-document.getElementById("entryResult").innerText = r;
-}
-  function makeEntry(){
-let t=document.getElementById("entryType").value;
-let a=document.getElementById("amount").value || "____";
-let r="";
-if(t=="cash_purchase") r=`من حـ/ المخزون أو المشتريات ${a}\nإلى حـ/ الصندوق ${a}`;
-if(t=="credit_purchase") r=`من حـ/ المخزون أو المشتريات ${a}\nإلى حـ/ الموردين ${a}`;
-if(t=="cash_sale") r=`من حـ/ الصندوق ${a}\nإلى حـ/ المبيعات ${a}`;
-if(t=="credit_sale") r=`من حـ/ العملاء ${a}\nإلى حـ/ المبيعات ${a}`;
-if(t=="collection") r=`من حـ/ الصندوق أو البنك ${a}\nإلى حـ/ العملاء ${a}`;
-if(t=="payment") r=`من حـ/ الموردين ${a}\nإلى حـ/ الصندوق أو البنك ${a}`;
-if(t=="expense") r=`من حـ/ المصروف ${a}\nإلى حـ/ الصندوق أو البنك ${a}`;
-document.getElementById("entryResult").innerText=r;
+let key=document.getElementById("entryType").value;
+let amount=document.getElementById("amount").value || "____";
+let title=entries[key][0];
+let text=entries[key][1].replaceAll("{a}",amount);
+document.getElementById("entryResult").innerText=`${title}\n\n${text}\n\nملاحظة: قد تختلف المعالجة حسب طبيعة الشركة وسياساتها المحاسبية.`;
 }
 
+/* شجرة الحسابات */
 function showAccounts(){
-layout("شجرة الحسابات", `
-<div class="grid">
-<div class="card"><h3>1 الأصول</h3>الصندوق<br>البنك<br>العملاء<br>المخزون<br>الأثاث والمعدات</div>
-<div class="card"><h3>2 الالتزامات</h3>الموردون<br>القروض<br>ضريبة المبيعات المستحقة<br>مستحقات الضمان</div>
-<div class="card"><h3>3 حقوق الملكية</h3>رأس المال<br>الأرباح المحتجزة<br>جاري الشركاء</div>
-<div class="card"><h3>4 الإيرادات</h3>المبيعات<br>إيرادات خدمات<br>مردودات ومسموحات المبيعات</div>
-<div class="card"><h3>5 المصروفات</h3>رواتب<br>إيجار<br>كهرباء ومياه<br>مصاريف بنكية<br>دعاية وإعلان</div>
+layout("شجرة الحسابات الذكية", `
+<div class="card">
+<select id="companyType">
+<option value="trading">شركة تجارية</option>
+<option value="service">شركة خدمات</option>
+<option value="industrial">شركة صناعية</option>
+<option value="contracting">شركة مقاولات</option>
+</select>
+<button class="send" onclick="generateAccounts()">توليد شجرة الحسابات</button>
 </div>
+<div id="accountsResult" class="result"></div>
 `);
 }
 
+function generateAccounts(){
+let t=document.getElementById("companyType").value;
+let extra="";
+if(t==="trading") extra="مشتريات\nمردودات مشتريات\nمبيعات\nمردودات مبيعات\nمخزون بضاعة";
+if(t==="service") extra="إيرادات خدمات\nتكلفة الخدمات\nمصروفات تشغيلية";
+if(t==="industrial") extra="مواد خام\nإنتاج تحت التشغيل\nإنتاج تام\nأجور صناعية\nتكاليف صناعية غير مباشرة";
+if(t==="contracting") extra="مشاريع تحت التنفيذ\nمستخلصات عملاء\nدفعات مقدمة من العملاء\nمقاولي باطن";
+document.getElementById("accountsResult").innerText=
+`1 الأصول
+101 الصندوق
+102 البنك
+103 العملاء
+104 المخزون
+105 الأصول الثابتة
+106 مجمع الإهلاك
+
+2 الالتزامات
+201 الموردون
+202 قروض بنكية
+203 ضريبة مبيعات مستحقة
+204 أمانات ضمان اجتماعي
+205 مصاريف مستحقة
+
+3 حقوق الملكية
+301 رأس المال
+302 جاري الشركاء
+303 الأرباح المحتجزة
+304 مسحوبات شخصية
+
+4 الإيرادات
+401 المبيعات أو إيرادات الخدمات
+402 خصم مكتسب
+403 إيرادات أخرى
+
+5 المصروفات
+501 الرواتب والأجور
+502 الإيجار
+503 كهرباء ومياه
+504 اتصالات وإنترنت
+505 مصاريف بنكية
+506 إهلاك
+507 دعاية وإعلان
+
+حسابات إضافية حسب نوع الشركة:
+${extra}`;
+}
+
+/* الرواتب */
 function showSalary(){
-layout("حاسبة الرواتب", `
+layout("حاسبة الرواتب والضمان", `
+<div class="grid">
 <div class="card">
-<input id="basic" type="number" placeholder="الراتب الإجمالي">
-<input id="ded" type="number" placeholder="اقتطاعات أخرى">
-<button class="send" onclick="calcSalary()">احسب</button>
+<input id="basicSalary" type="number" placeholder="الراتب الأساسي">
+<input id="allowances" type="number" placeholder="بدلات">
+<input id="otherDeduct" type="number" placeholder="اقتطاعات أخرى">
+<button class="send" onclick="calcSalary()">احسب الراتب</button>
 </div>
-<div id="salaryResult" class="card"></div>
-<p class="small">النسب هنا تعليمية ويمكن تعديلها حسب القانون والتعليمات المعمول بها.</p>
+<div id="salaryResult" class="result"></div>
+</div>
+<p class="small">نسبة الضمان للموظف هنا 7.5% كأداة تدريبية قابلة للتعديل.</p>
 `);
 }
 
 function calcSalary(){
-let basic=Number(document.getElementById("basic").value||0);
-let ded=Number(document.getElementById("ded").value||0);
-let social=basic*0.075;
-let net=basic-social-ded;
+let basic=Number(document.getElementById("basicSalary").value||0);
+let allowances=Number(document.getElementById("allowances").value||0);
+let other=Number(document.getElementById("otherDeduct").value||0);
+let gross=basic+allowances;
+let social=gross*0.075;
+let net=gross-social-other;
 document.getElementById("salaryResult").innerText=
-`الراتب الإجمالي: ${basic.toFixed(2)}
-اقتطاع ضمان تقديري 7.5%: ${social.toFixed(2)}
-اقتطاعات أخرى: ${ded.toFixed(2)}
-صافي الراتب: ${net.toFixed(2)}`;
+`الراتب الأساسي: ${basic.toFixed(2)}
+البدلات: ${allowances.toFixed(2)}
+إجمالي الراتب: ${gross.toFixed(2)}
+اقتطاع الضمان 7.5%: ${social.toFixed(2)}
+اقتطاعات أخرى: ${other.toFixed(2)}
+صافي الراتب: ${net.toFixed(2)}
+
+قيد الرواتب:
+من حـ/ مصروف الرواتب والأجور ${gross.toFixed(2)}
+إلى حـ/ أمانات الضمان الاجتماعي ${social.toFixed(2)}
+إلى حـ/ اقتطاعات أخرى ${other.toFixed(2)}
+إلى حـ/ البنك أو الصندوق ${net.toFixed(2)}`;
 }
 
-function showSalesTax(){
-layout("حاسبة ضريبة المبيعات", `
+/* ضريبة الدخل */
+function showIncomeTax(){
+layout("حاسبة ضريبة الدخل الأردني للأفراد", `
 <div class="card">
-<input id="taxAmount" type="number" placeholder="المبلغ قبل الضريبة">
-<input id="taxRate" type="number" value="16" placeholder="نسبة الضريبة">
-<button class="send" onclick="calcTax()">احسب</button>
+<select id="incomeType">
+<option value="monthly">دخل شهري</option>
+<option value="annual">دخل سنوي</option>
+</select>
+<input id="income" type="number" placeholder="الدخل بالدينار">
+<input id="personalExemption" type="number" value="9000" placeholder="الإعفاء الشخصي">
+<input id="familyExemption" type="number" value="0" placeholder="إعفاء المعالين">
+<input id="extraExemption" type="number" value="0" placeholder="إعفاءات إضافية">
+<button class="send" onclick="calculateIncomeTax()">احسب الضريبة</button>
 </div>
-<div id="taxResult" class="card"></div>
+<div id="taxResult" class="result"></div>
+<p class="small">الحاسبة تعليمية وليست استشارة ضريبية نهائية.</p>
 `);
 }
 
-function calcTax(){
-let a=Number(document.getElementById("taxAmount").value||0);
-let r=Number(document.getElementById("taxRate").value||0);
-let tax=a*r/100;
+function calculateIncomeTax(){
+let income=Number(document.getElementById("income").value||0);
+let type=document.getElementById("incomeType").value;
+let annual= type==="monthly" ? income*12 : income;
+let personal=Number(document.getElementById("personalExemption").value||0);
+let family=Number(document.getElementById("familyExemption").value||0);
+let extra=Number(document.getElementById("extraExemption").value||0);
+let exemptions=personal+family+extra;
+if(exemptions>23000) exemptions=23000;
+let taxable=Math.max(annual-exemptions,0);
+let remaining=taxable;
+let tax=0;
+function bracket(amount,rate){
+let part=Math.min(remaining,amount);
+if(part>0){tax+=part*rate;remaining-=part;}
+}
+bracket(5000,.05);
+bracket(5000,.10);
+bracket(5000,.15);
+bracket(5000,.20);
+bracket(980000,.25);
+if(remaining>0) tax+=remaining*.30;
+let monthly=tax/12;
 document.getElementById("taxResult").innerText=
-`المبلغ قبل الضريبة: ${a.toFixed(2)}
-ضريبة المبيعات: ${tax.toFixed(2)}
-الإجمالي بعد الضريبة: ${(a+tax).toFixed(2)}`;
+`نوع الدخل: ${type==="monthly"?"شهري":"سنوي"}
+الدخل السنوي المحتسب: ${annual.toFixed(2)}
+إجمالي الإعفاءات المعتمدة: ${exemptions.toFixed(2)}
+الدخل الخاضع للضريبة: ${taxable.toFixed(2)}
+
+ضريبة الدخل السنوية: ${tax.toFixed(2)}
+ضريبة الدخل الشهرية التقريبية: ${monthly.toFixed(2)}`;
 }
 
+/* ضريبة المبيعات */
+function showSalesTax(){
+layout("حاسبة ضريبة المبيعات", `
+<div class="grid">
+<div class="card">
+<input id="sales" type="number" placeholder="المبيعات الخاضعة">
+<input id="purchases" type="number" placeholder="المشتريات الخاضعة">
+<input id="vatRate" type="number" value="16" placeholder="نسبة الضريبة">
+<button class="send" onclick="calcVat()">احسب</button>
+</div>
+<div id="vatResult" class="result"></div>
+</div>
+`);
+}
+
+function calcVat(){
+let s=Number(document.getElementById("sales").value||0);
+let p=Number(document.getElementById("purchases").value||0);
+let r=Number(document.getElementById("vatRate").value||0)/100;
+let output=s*r;
+let input=p*r;
+let due=output-input;
+document.getElementById("vatResult").innerText=
+`ضريبة المخرجات: ${output.toFixed(2)}
+ضريبة المدخلات: ${input.toFixed(2)}
+الرصيد: ${Math.abs(due).toFixed(2)} ${due>=0?"مستحق للدائرة":"رصيد لصالح الشركة"}
+
+قيد توريد الضريبة إن وجد:
+من حـ/ ضريبة المبيعات المستحقة
+إلى حـ/ البنك`;
+}
+
+/* البنك */
 function showBank(){
 layout("مذكرة تسوية البنك", `
 <div class="card">
-<input id="book" type="number" placeholder="رصيد البنك حسب الدفاتر">
-<input id="fees" type="number" placeholder="عمولات بنكية">
-<input id="interest" type="number" placeholder="فوائد أو إيداعات غير مسجلة">
-<button class="send" onclick="calcBank()">احسب الرصيد المعدل</button>
+<input id="bankStatement" type="number" placeholder="الرصيد حسب كشف البنك">
+<input id="outstandingCheques" type="number" placeholder="شيكات صادرة غير مصروفة">
+<input id="depositsInTransit" type="number" placeholder="إيداعات بالطريق">
+<input id="bookBalance" type="number" placeholder="الرصيد حسب الدفاتر">
+<input id="bankFees" type="number" placeholder="عمولات بنكية غير مسجلة">
+<input id="bankInterest" type="number" placeholder="فوائد/إيداعات غير مسجلة">
+<button class="send" onclick="calcBank()">إعداد التسوية</button>
 </div>
-<div id="bankResult" class="card"></div>
+<div id="bankResult" class="result"></div>
 `);
 }
 
 function calcBank(){
-let book=Number(document.getElementById("book").value||0);
-let fees=Number(document.getElementById("fees").value||0);
-let interest=Number(document.getElementById("interest").value||0);
-let adjusted=book-fees+interest;
+let bs=Number(document.getElementById("bankStatement").value||0);
+let ch=Number(document.getElementById("outstandingCheques").value||0);
+let dep=Number(document.getElementById("depositsInTransit").value||0);
+let book=Number(document.getElementById("bookBalance").value||0);
+let fees=Number(document.getElementById("bankFees").value||0);
+let interest=Number(document.getElementById("bankInterest").value||0);
+let adjustedBank=bs-ch+dep;
+let adjustedBook=book-fees+interest;
 document.getElementById("bankResult").innerText=
-`رصيد البنك حسب الدفاتر: ${book.toFixed(2)}
-ناقص العمولات البنكية: ${fees.toFixed(2)}
+`الرصيد المعدل حسب البنك:
+رصيد كشف البنك: ${bs.toFixed(2)}
+ناقص شيكات صادرة غير مصروفة: ${ch.toFixed(2)}
+زائد إيداعات بالطريق: ${dep.toFixed(2)}
+الرصيد المعدل: ${adjustedBank.toFixed(2)}
+
+الرصيد المعدل حسب الدفاتر:
+رصيد الدفاتر: ${book.toFixed(2)}
+ناقص عمولات بنكية: ${fees.toFixed(2)}
 زائد فوائد/إيداعات غير مسجلة: ${interest.toFixed(2)}
-الرصيد المعدل: ${adjusted.toFixed(2)}`;
+الرصيد المعدل: ${adjustedBook.toFixed(2)}
+
+الفرق بعد التسوية: ${(adjustedBank-adjustedBook).toFixed(2)}`;
 }
 
-function showFAQ(){
-layout("أسئلة محاسبية جاهزة", `
-<div class="card"><b>ما هو القيد المحاسبي؟</b><br>هو تسجيل مالي يوضح الطرف المدين والطرف الدائن للعملية المالية.</div>
-<div class="card"><b>ما الفرق بين العميل والمورد؟</b><br>العميل شخص أو شركة نبيع لها، والمورد شخص أو شركة نشتري منها.</div>
-<div class="card"><b>ما الهدف من شجرة الحسابات؟</b><br>تنظيم الحسابات لتسهيل تسجيل العمليات وإعداد التقارير المالية.</div>
-<div class="card"><b>ما هي مذكرة تسوية البنك؟</b><br>كشف يوضح الفروقات بين رصيد البنك في الدفاتر ورصيد كشف البنك.</div>
-<div class="card"><b>ما هي القوائم المالية الأساسية؟</b><br>قائمة الدخل، قائمة المركز المالي، قائمة التدفقات النقدية، وقائمة التغيرات في حقوق الملكية.</div>
-`);
-}
-function showIncomeTax(){
-
-layout("حاسبة ضريبة الدخل الأردني", `
-
+/* التحليل المالي */
+function showFinancialAnalysis(){
+layout("التحليل المالي", `
 <div class="card">
-
-<select id="incomeType">
-<option value="annual">دخل سنوي</option>
-<option value="monthly">دخل شهري</option>
-</select>
-
-<input id="income" type="number" placeholder="أدخل الدخل بالدينار">
-
-<button class="send" onclick="calculateIncomeTax()">
-احسب الضريبة
-</button>
-
+<input id="currentAssets" type="number" placeholder="الأصول المتداولة">
+<input id="inventory" type="number" placeholder="المخزون">
+<input id="currentLiabilities" type="number" placeholder="الخصوم المتداولة">
+<input id="salesRevenue" type="number" placeholder="المبيعات">
+<input id="netProfit" type="number" placeholder="صافي الربح">
+<button class="send" onclick="calcAnalysis()">تحليل</button>
 </div>
-
-<div id="taxResult" class="card"></div>
-
+<div id="analysisResult" class="result"></div>
 `);
-
 }
 
-function calculateIncomeTax(){
+function calcAnalysis(){
+let ca=Number(document.getElementById("currentAssets").value||0);
+let inv=Number(document.getElementById("inventory").value||0);
+let cl=Number(document.getElementById("currentLiabilities").value||0);
+let sales=Number(document.getElementById("salesRevenue").value||0);
+let profit=Number(document.getElementById("netProfit").value||0);
+let current=cl?ca/cl:0;
+let quick=cl?(ca-inv)/cl:0;
+let margin=sales?profit/sales*100:0;
+document.getElementById("analysisResult").innerText=
+`نسبة التداول: ${current.toFixed(2)}
+نسبة السيولة السريعة: ${quick.toFixed(2)}
+هامش صافي الربح: ${margin.toFixed(2)}%
 
-let income = Number(document.getElementById("income").value || 0);
-let incomeType = document.getElementById("incomeType").value;
-
-let annualIncome = income;
-
-if(incomeType === "monthly"){
-annualIncome = income * 12;
+قراءة سريعة:
+- نسبة التداول أعلى من 1 غالباً مؤشر جيد للسيولة.
+- هامش الربح يوضح نسبة الربح من المبيعات.
+- يجب مقارنة النسب مع سنوات سابقة أو شركات مشابهة.`;
 }
 
-let exemption = 9000;
-let taxableIncome = annualIncome - exemption;
+/* تأسيس الشركات */
+function showCompanySetup(){
+layout("تأسيس شركة محاسبياً", `
+<div class="grid">
+<div class="card"><h3>1. فتح ملف الشركة</h3>تحديد نوع الشركة، النشاط، رأس المال، الشركاء، والسجل الضريبي.</div>
+<div class="card"><h3>2. إعداد شجرة الحسابات</h3>تصميم حسابات تناسب النشاط: تجاري، خدمات، صناعي، مقاولات.</div>
+<div class="card"><h3>3. الأرصدة الافتتاحية</h3>تسجيل رأس المال، النقدية، البنك، الأصول، الالتزامات.</div>
+<div class="card"><h3>4. دورة مستندية</h3>فواتير مبيعات، مشتريات، سند قبض، سند صرف، شيكات، رواتب.</div>
+</div>
+<div class="result">
+قيد رأس المال:
+من حـ/ البنك أو الصندوق
+إلى حـ/ رأس المال
 
-if(taxableIncome < 0){
-taxableIncome = 0;
+قيد شراء أصل عند التأسيس:
+من حـ/ الأصول الثابتة
+إلى حـ/ البنك أو الموردين
+</div>
+`);
 }
 
-let tax = 0;
-
-if(taxableIncome <= 5000){
-tax = taxableIncome * 0.05;
+/* تدريب */
+function showTraining(){
+layout("تدريب عملي", `
+<div class="card">
+<button class="send" onclick="newCase()">أعطني حالة عملية</button>
+</div>
+<div id="caseResult" class="result"></div>
+`);
 }
-else{
-tax = 5000 * 0.05;
-tax += (taxableIncome - 5000) * 0.10;
+
+const cases=[
+"قامت الشركة بشراء بضاعة نقداً بقيمة 3,000 دينار. المطلوب: تسجيل القيد.",
+"باعت الشركة بضاعة على الحساب بقيمة 5,000 دينار. المطلوب: تسجيل القيد.",
+"دفعت الشركة إيجار المكتب بقيمة 700 دينار من البنك. المطلوب: تسجيل القيد.",
+"استلمت الشركة شيكاً من عميل بقيمة 1,200 دينار. المطلوب: تسجيل القيد.",
+"اشترت الشركة جهاز كمبيوتر بقيمة 900 دينار نقداً. المطلوب: تسجيل القيد."
+];
+
+function newCase(){
+let c=cases[Math.floor(Math.random()*cases.length)];
+document.getElementById("caseResult").innerText=c;
 }
 
-let monthlyTax = tax / 12;
+/* FAQ */
+function showFAQ(){
+layout("بنك الأسئلة", `
+<table class="table">
+<tr><th>السؤال</th><th>الإجابة المختصرة</th></tr>
+<tr><td>ما هو القيد المحاسبي؟</td><td>تسجيل مالي يحتوي طرفاً مديناً وطرفاً دائناً.</td></tr>
+<tr><td>ما الفرق بين العميل والمورد؟</td><td>العميل نبيع له، والمورد نشتري منه.</td></tr>
+<tr><td>ما هي شجرة الحسابات؟</td><td>دليل منظم للحسابات المستخدمة في النظام المحاسبي.</td></tr>
+<tr><td>ما هي مذكرة تسوية البنك؟</td><td>مقارنة بين رصيد البنك في الدفاتر ورصيد كشف البنك.</td></tr>
+<tr><td>ما هي القوائم المالية الأساسية؟</td><td>قائمة الدخل، المركز المالي، التدفقات النقدية، والتغيرات في حقوق الملكية.</td></tr>
+</table>
+`);
+}
 
-document.getElementById("taxResult").innerHTML = `
-<h3>النتيجة</h3>
-
-نوع الدخل: ${incomeType === "monthly" ? "شهري" : "سنوي"}<br>
-
-الدخل السنوي المحتسب: ${annualIncome.toFixed(2)} دينار<br>
-
-الإعفاء الشخصي: ${exemption.toFixed(2)} دينار<br>
-
-الدخل الخاضع للضريبة: ${taxableIncome.toFixed(2)} دينار<br>
-
-ضريبة الدخل السنوية التقديرية: ${tax.toFixed(2)} دينار<br>
-
-ضريبة الدخل الشهرية التقديرية: ${monthlyTax.toFixed(2)} دينار
-`;
-
-}showHome();
+showHome();
 </script>
 
 </body>
