@@ -96,77 +96,20 @@ async function loadKnowledge() {
   }
 }
 
-<script>
 function askAssistant() {
-  const question = document.getElementById("question").value.trim();
-  const answerBox = document.getElementById("answer");
+  const q = document.getElementById("question").value.trim();
+  const answer = document.getElementById("answer");
 
-  if (!question) {
-    answerBox.innerText = "اكتب السؤال أولاً.";
+  if (!q) {
+    answer.innerText = "اكتب السؤال أولاً.";
     return;
   }
 
   if (!DATA || !DATA.items) {
-    answerBox.innerText = "ملف المعرفة لم يتم تحميله.";
+    answer.innerText = "ملف المعرفة لم يتم تحميله بعد.";
     return;
   }
 
-  const stopWords = ["شو","ما","هي","هو","يعني","تعريف","اشرح","وضح","عن","في","من"];
-  const words = clean(question)
-    .split(" ")
-    .filter(w => w.length > 1 && !stopWords.includes(w));
-
-  let items = DATA.items;
-
-  if (currentAxis !== "الرئيسية") {
-    items = items.filter(item => clean(item.axis).includes(clean(currentAxis)));
-  }
-
-  const results = items.map(item => {
-    const title = clean(item.title || "");
-    const content = clean(item.content || "");
-    let score = 0;
-
-    words.forEach(word => {
-      if (title.includes(word)) score += 5;
-      if (content.includes(word)) score += 2;
-    });
-
-    if (content.includes("الفهرس")) score -= 10;
-    if (content.includes("الحقوق محفوظة")) score -= 3;
-
-    return { item, score };
-  })
-  .filter(r => r.score > 0)
-  .sort((a, b) => b.score - a.score)
-  .slice(0, 2);
-
-  if (!results.length) {
-    answerBox.innerText = "لم أجد إجابة مباشرة. جرّب كلمات مثل: المحاسبة، الأصول، القيود، الشيكات.";
-    return;
-  }
-
-  answerBox.innerHTML = results.map(r => {
-    let text = r.item.content || "";
-
-    text = text
-      .replace(/© 2025.*?info@sarhgroups.com/g, "")
-      .replace(/Page/g, "")
-      .replace(/\s+/g, " ")
-      .trim();
-
-    text = text.substring(0, 1200);
-
-    return `
-      <div class="result">
-        <strong>${r.item.title || "الإجابة"}</strong>
-        <div>${text}</div>
-        <div class="source">المحور: ${r.item.axis || ""} - الصفحة: ${r.item.page || ""}</div>
-      </div>
-    `;
-  }).join("");
-}
-</script>
   const qNorm = normalizeText(q);
   const words = qNorm.split(" ").filter(w => w.length > 2);
 
