@@ -111,30 +111,34 @@ function askAssistant() {
   }
 
   const qNorm = normalizeText(q);
-  const words = qNorm.split(" ").filter(w => w.length > 2);
+  const words = qNorm.split(" ").filter(w => w.length > 1);
 
-  let items = DATA.items;
+  let results = DATA.items.map(item => {
+    const axisText = normalizeText(item.axis || "");
+    const titleText = normalizeText(item.title || "");
+    const questionText = normalizeText(item.question || "");
+    const answerText = normalizeText(item.answer || "");
+    const contentText = normalizeText(item.content || "");
+    const keywordsText = normalizeText((item.keywords || []).join(" "));
 
-  if (currentAxis !== "الرئيسية") {
-    items = items.filter(item =>
-      normalizeText(item.axis).includes(normalizeText(currentAxis))
-    );
-  }
-
-  let results = items.map(item => {
-    const text = normalizeText(
-      (item.axis || "") + " " +
-      (item.title || "") + " " +
-      (item.question || "") + " " +
-(item.answer || "") + " " +
-(item.content || "") + " " +
-      ((item.keywords || []).join(" "))
-    );
+    const fullText = axisText + " " + titleText + " " + questionText + " " + answerText + " " + contentText + " " + keywordsText;
 
     let score = 0;
+
     words.forEach(w => {
-      if (text.includes(w)) score++;
+      if (titleText.includes(w)) score += 5;
+      if (questionText.includes(w)) score += 5;
+      if (keywordsText.includes(w)) score += 6;
+      if (answerText.includes(w)) score += 3;
+      if (contentText.includes(w)) score += 2;
+      if (axisText.includes(w)) score += 1;
     });
+
+    if (fullText.includes(qNorm)) score += 20;
+
+    if (currentAxis !== "الرئيسية" && axisText.includes(normalizeText(currentAxis))) {
+      score += 5;
+    }
 
     return { item, score };
   })
@@ -143,7 +147,7 @@ function askAssistant() {
   .slice(0, 3);
 
   if (results.length === 0) {
-    answer.innerText = "لم أجد إجابة مباشرة. جرّب صياغة السؤال بكلمات أبسط.";
+    answer.innerText = "لم أجد إجابة مباشرة. جرّب كتابة كلمة مثل: رواتب، قيد الرواتب، مصروف الرواتب.";
     return;
   }
 
@@ -155,7 +159,7 @@ function askAssistant() {
     </div>
   `).join("");
 }
-
+  
 buildMenu();
 loadKnowledge();
 </script>
