@@ -34,8 +34,127 @@
     </div>
   </div>
 <script>
-let DATA=null, currentAxis="الرئيسية";
-const axes=["الرئيسية","المفاهيم الأساسية للمحاسبة","مقومات النظام المحاسبي","تسجيل العمليات المالية","التعريف بالبرنامج المحاسبي وكيفية التعامل معه محاسبياً","التسجيل في البرنامج من خلال مستندات حقيقية","الشيكات ومستندات القبض والصرف والقيد والإشعارات البنكية","إعداد القوائم المالية","مذكرة التسوية وكشوف الرواتب والضمان","ضريبة الدخل والمبيعات والإقرارات الضريبية"];
-function buildMenu(){const m=document.getElementById('axisMenu');m.innerHTML='';axes.forEach(a=>{const b=document.createElement('button');b.className='axis-btn'+(a===currentAxis?' active':'');b.textContent=a;b.onclick=()=>selectAxis(a);m.appendChild(b);});}
-function selectAxis(axis){currentAxis=axis;document.getElementById('selectedAxis').innerText='المحور المختار: '+axis;buildMenu();document.getElementById('answer').innerText='تم اختيار محور: '+axis+'\nاكتب سؤالك الآن ليتم البحث ضمن هذا المحور.';}
-function normalizeText(t){return (t||'').toString().toLowerCase().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[ًٌٍَُِّْـ]/g,'').replace(/[^
+let DATA = null;
+let currentAxis = "الرئيسية";
+
+const axes = [
+  "الرئيسية",
+  "المفاهيم الأساسية للمحاسبة",
+  "مقومات النظام المحاسبي",
+  "تسجيل العمليات المالية",
+  "التعريف بالبرنامج المحاسبي وكيفية التعامل معه محاسبياً",
+  "التسجيل في البرنامج من خلال مستندات حقيقية",
+  "الشيكات ومستندات القبض والصرف والقيد والإشعارات البنكية",
+  "إعداد القوائم المالية",
+  "مذكرة التسوية وكشوف الرواتب والضمان",
+  "ضريبة الدخل والمبيعات والإقرارات الضريبية"
+];
+
+function buildMenu() {
+  const m = document.getElementById("axisMenu");
+  m.innerHTML = "";
+  axes.forEach(a => {
+    const b = document.createElement("button");
+    b.className = "axis-btn" + (a === currentAxis ? " active" : "");
+    b.textContent = a;
+    b.onclick = () => selectAxis(a);
+    m.appendChild(b);
+  });
+}
+
+function selectAxis(axis) {
+  currentAxis = axis;
+  document.getElementById("selectedAxis").innerText = "المحور المختار: " + axis;
+  buildMenu();
+  document.getElementById("answer").innerText =
+    "تم اختيار محور: " + axis + "\nاكتب سؤالك الآن.";
+}
+
+function normalizeText(t) {
+  return (t || "")
+    .toString()
+    .toLowerCase()
+    .replace(/[أإآ]/g, "ا")
+    .replace(/ة/g, "ه")
+    .replace(/ى/g, "ي")
+    .replace(/[ًٌٍَُِّْـ]/g, "")
+    .replace(/[^\u0600-\u06FFa-zA-Z0-9 ]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+async function loadKnowledge() {
+  try {
+    const res = await fetch("./knowledge.json?v=" + Date.now());
+    DATA = await res.json();
+    buildMenu();
+    document.getElementById("answer").innerText =
+      "تم تحميل ملف المعرفة بنجاح. اختر محوراً واكتب سؤالك.";
+  } catch (e) {
+    document.getElementById("answer").innerText =
+      "حدث خطأ في تحميل knowledge.json. تأكد أن الملف موجود بنفس مجلد index.html.";
+  }
+}
+
+function askAssistant() {
+  const q = document.getElementById("question").value.trim();
+  const answer = document.getElementById("answer");
+
+  if (!q) {
+    answer.innerText = "اكتب السؤال أولاً.";
+    return;
+  }
+
+  if (!DATA || !DATA.items) {
+    answer.innerText = "ملف المعرفة لم يتم تحميله بعد.";
+    return;
+  }
+
+  const qNorm = normalizeText(q);
+  const words = qNorm.split(" ").filter(w => w.length > 2);
+
+  let items = DATA.items;
+
+  if (currentAxis !== "الرئيسية") {
+    items = items.filter(item =>
+      normalizeText(item.axis).includes(normalizeText(currentAxis))
+    );
+  }
+
+  let results = items.map(item => {
+    const text = normalizeText(
+      (item.axis || "") + " " +
+      (item.title || "") + " " +
+      (item.question || "") + " " +
+      (item.answer || "") + " " +
+      ((item.keywords || []).join(" "))
+    );
+
+    let score = 0;
+    words.forEach(w => {
+      if (text.includes(w)) score++;
+    });
+
+    return { item, score };
+  })
+  .filter(r => r.score > 0)
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 3);
+
+  if (results.length === 0) {
+    answer.innerText = "لم أجد إجابة مباشرة. جرّب صياغة السؤال بكلمات أبسط.";
+    return;
+  }
+
+  answer.innerHTML = results.map(r => `
+    <div class="result">
+      <strong>${r.item.title || r.item.question || "نتيجة"}</strong>
+      <div>${r.item.answer || r.item.content || ""}</div>
+      <div class="source">المحور: ${r.item.axis || ""} - الصفحة: ${r.item.page || ""}</div>
+    </div>
+  `).join("");
+}
+
+buildMenu();
+loadKnowledge();
+</script>
