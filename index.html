@@ -4,359 +4,38 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>مساعد صرح المحاسبي الذكي Pro</title>
-
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: "Tahoma", "Arial", sans-serif;
-    }
-
-    body {
-      margin: 0;
-      background: #f5f5f5;
-      color: #111827;
-    }
-
-    .app {
-      max-width: 1250px;
-      margin: 35px auto;
-      background: #fff;
-      border-radius: 22px;
-      overflow: hidden;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
-    }
-
-    header {
-      background: linear-gradient(135deg, #5b0b0b, #b91c1c);
-      color: white;
-      padding: 28px 20px;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 34px;
-    }
-
-    header p {
-      margin: 10px 0 0;
-      font-size: 15px;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      min-height: 680px;
-    }
-
-    aside {
-      background: #fafafa;
-      border-left: 1px solid #e5e7eb;
-      padding: 22px;
-    }
-
-    .axis-btn {
-      width: 100%;
-      border: none;
-      background: #fde2e2;
-      color: #111;
-      padding: 14px 12px;
-      margin-bottom: 10px;
-      border-radius: 13px;
-      cursor: pointer;
-      font-size: 15px;
-      text-align: center;
-      transition: 0.2s;
-    }
-
-    .axis-btn:hover,
-    .axis-btn.active {
-      background: #b91c1c;
-      color: #fff;
-    }
-
-    main {
-      padding: 35px;
-    }
-
-    .title {
-      text-align: right;
-      font-size: 28px;
-      margin-bottom: 25px;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
-      margin-bottom: 30px;
-    }
-
-    .card {
-      border: 1px solid #e5e7eb;
-      background: #f9fafb;
-      border-radius: 16px;
-      padding: 22px;
-      min-height: 135px;
-    }
-
-    .card h3 {
-      margin-top: 0;
-      font-size: 19px;
-    }
-
-    .card p {
-      line-height: 1.8;
-      font-size: 14px;
-    }
-
-    .chat-box {
-      border: 1px solid #e5e7eb;
-      border-radius: 18px;
-      padding: 20px;
-      background: #f9fafb;
-    }
-
-    .selected-axis {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 15px;
-      color: #7f1d1d;
-      font-weight: bold;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 120px;
-      resize: vertical;
-      border: 1px solid #d1d5db;
-      border-radius: 12px;
-      padding: 15px;
-      font-size: 15px;
-      line-height: 1.7;
-      outline: none;
-    }
-
-    button.ask {
-      margin-top: 12px;
-      background: #b91c1c;
-      color: white;
-      border: none;
-      padding: 13px 28px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 15px;
-    }
-
-    .answer {
-      margin-top: 18px;
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 18px;
-      line-height: 2;
-      white-space: pre-line;
-      min-height: 80px;
-    }
-
-    .badges {
-      margin-top: 25px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .badge {
-      background: #fde2e2;
-      color: #991b1b;
-      border-radius: 999px;
-      padding: 9px 15px;
-      font-size: 13px;
-    }
-
-    @media (max-width: 800px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      aside {
-        border-left: none;
-        border-bottom: 1px solid #e5e7eb;
-      }
-
-      header h1 {
-        font-size: 25px;
-      }
-    }
+    *{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}body{margin:0;background:#f5f5f5;color:#111827}.app{max-width:1250px;margin:35px auto;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.15)}header{background:linear-gradient(135deg,#5b0b0b,#b91c1c);color:#fff;padding:28px 20px;text-align:center}header h1{margin:0;font-size:34px}header p{margin:10px 0 0;font-size:15px}.layout{display:grid;grid-template-columns:300px 1fr;min-height:680px}aside{background:#fafafa;border-left:1px solid #e5e7eb;padding:22px}.axis-btn{width:100%;border:0;background:#fde2e2;color:#111;padding:13px 10px;margin-bottom:9px;border-radius:13px;cursor:pointer;font-size:14px;text-align:center;transition:.2s}.axis-btn:hover,.axis-btn.active{background:#b91c1c;color:#fff}main{padding:35px}.title{text-align:right;font-size:28px;margin-bottom:20px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:28px}.card{border:1px solid #e5e7eb;background:#f9fafb;border-radius:16px;padding:22px;min-height:130px}.card h3{margin-top:0;font-size:19px}.card p{line-height:1.8;font-size:14px}.chat-box{border:1px solid #e5e7eb;border-radius:18px;padding:20px;background:#f9fafb}.selected-axis{background:#fff;border:1px solid #ddd;border-radius:12px;padding:12px;margin-bottom:15px;color:#7f1d1d;font-weight:bold}textarea{width:100%;min-height:120px;resize:vertical;border:1px solid #d1d5db;border-radius:12px;padding:15px;font-size:15px;line-height:1.7;outline:none}button.ask{margin-top:12px;background:#b91c1c;color:#fff;border:0;padding:13px 28px;border-radius:12px;cursor:pointer;font-size:15px}.answer{margin-top:18px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;line-height:2;white-space:pre-line;min-height:90px}.result{border-top:1px solid #eee;padding-top:12px;margin-top:12px}.source{font-size:13px;color:#6b7280}.badges{margin-top:25px;display:flex;flex-wrap:wrap;gap:10px}.badge{background:#fde2e2;color:#991b1b;border-radius:999px;padding:9px 15px;font-size:13px}@media(max-width:800px){.layout{grid-template-columns:1fr}aside{border-left:0;border-bottom:1px solid #e5e7eb}header h1{font-size:25px}}
   </style>
 </head>
-
 <body>
   <div class="app">
     <header>
       <h1>مساعد صرح المحاسبي الذكي Pro</h1>
       <p>منصة تدريب محاسبي مجانية: قيود، ضرائب، رواتب، تسويات، تحليل مالي، وشجرة حسابات</p>
     </header>
-
     <div class="layout">
-      <aside>
-        <button class="axis-btn active" onclick="selectAxis('الرئيسية')">الرئيسية</button>
-        <button class="axis-btn" onclick="selectAxis('المفاهيم الأساسية للمحاسبة')">المفاهيم الأساسية للمحاسبة</button>
-        <button class="axis-btn" onclick="selectAxis('مقومات النظام المحاسبي')">مقومات النظام المحاسبي</button>
-        <button class="axis-btn" onclick="selectAxis('تسجيل العمليات المالية')">تسجيل العمليات المالية</button>
-        <button class="axis-btn" onclick="selectAxis('التعريف بالبرنامج المحاسبي')">التعريف بالبرنامج المحاسبي</button>
-        <button class="axis-btn" onclick="selectAxis('التسجيل من خلال مستندات حقيقية')">التسجيل من خلال مستندات حقيقية</button>
-        <button class="axis-btn" onclick="selectAxis('الشيكات ومستندات القبض والصرف')">الشيكات ومستندات القبض والصرف</button>
-        <button class="axis-btn" onclick="selectAxis('إعداد القوائم المالية')">إعداد القوائم المالية</button>
-        <button class="axis-btn" onclick="selectAxis('مذكرة التسوية وكشوف الرواتب والضمان')">مذكرة التسوية وكشوف الرواتب والضمان</button>
-        <button class="axis-btn" onclick="selectAxis('حاسبة الضريبة')">حاسبة الضريبة</button>
-      </aside>
-
+      <aside id="axisMenu"></aside>
       <main>
         <h2 class="title">لوحة التحكم الرئيسية</h2>
-
         <div class="cards">
-          <div class="card">
-            <h3>📘 القيود المحاسبية</h3>
-            <p>مولد قيود للمبيعات، المشتريات، الرواتب، البنوك، الشيكات، الأصول، والقروض.</p>
-          </div>
-
-          <div class="card">
-            <h3>📚 مكتبة المعرفة</h3>
-            <p>يتم البحث داخل ملف المعرفة الثاني عند إضافته باسم <strong>knowledge.js</strong>.</p>
-          </div>
-
-          <div class="card">
-            <h3>💰 الضرائب والرواتب</h3>
-            <p>حاسبة ضريبة دخل أفراد، ضريبة مبيعات، صافي راتب، وضمان اجتماعي.</p>
-          </div>
+          <div class="card"><h3>📘 البحث في المادة</h3><p>يبحث داخل ملف knowledge.json المستخرج من مادة المحاسبة العملية.</p></div>
+          <div class="card"><h3>📚 المحاور</h3><p>اختر المحور من القائمة، ثم اكتب سؤالك ليتم تضييق البحث داخله.</p></div>
+          <div class="card"><h3>🔎 بدون API</h3><p>يعمل على GitHub Pages مباشرة بدون اشتراك أو مفتاح API.</p></div>
         </div>
-
         <div class="chat-box">
-          <div class="selected-axis" id="selectedAxis">
-            المحور المختار: الرئيسية
-          </div>
-
-          <textarea id="question" placeholder="اكتب سؤالك هنا... مثال: ما هو القيد المحاسبي للمبيعات النقدية؟"></textarea>
-
+          <div class="selected-axis" id="selectedAxis">المحور المختار: الرئيسية</div>
+          <textarea id="question" placeholder="اكتب سؤالك هنا... مثال: ما هي معادلة الميزانية؟"></textarea>
           <button class="ask" onclick="askAssistant()">اسأل المساعد</button>
-
-          <div class="answer" id="answer">
-            الإجابة ستظهر هنا...
-          </div>
+          <div class="answer" id="answer">جاري تحميل ملف المعرفة...</div>
         </div>
-
-        <div class="badges">
-          <span class="badge">مجاني 100%</span>
-          <span class="badge">بدون API</span>
-          <span class="badge">مرتبط مع knowledge.js</span>
-          <span class="badge">مناسب لدورة المحاسبة العملية</span>
-        </div>
+        <div class="badges"><span class="badge">مجاني 100%</span><span class="badge">بدون API</span><span class="badge">مرتبط مع knowledge.json</span><span class="badge">مناسب لدورة المحاسبة العملية</span></div>
       </main>
     </div>
   </div>
-
-  <script src="knowledge.js"></script>
-
-  <script>
-    let currentAxis = "الرئيسية";
-
-    function selectAxis(axis) {
-      currentAxis = axis;
-
-      document.getElementById("selectedAxis").innerText =
-        "المحور المختار: " + axis;
-
-      document.querySelectorAll(".axis-btn").forEach(btn => {
-        btn.classList.remove("active");
-        if (btn.innerText.trim() === axis) {
-          btn.classList.add("active");
-        }
-      });
-
-      document.getElementById("answer").innerText =
-        "تم اختيار محور: " + axis + "\nاكتب سؤالك الآن ليتم البحث ضمن هذا المحور.";
-    }
-
-    function askAssistant() {
-      const question = document.getElementById("question").value.trim();
-      const answerBox = document.getElementById("answer");
-
-      if (!question) {
-        answerBox.innerText = "يرجى كتابة السؤال أولاً.";
-        return;
-      }
-
-      if (typeof KNOWLEDGE_BASE === "undefined") {
-        answerBox.innerText =
-          "لم يتم رفع ملف المعرفة الثاني بعد.\n\nارفع ملف باسم knowledge.js يحتوي على الأسئلة والإجابات الخاصة بالمحاور.";
-        return;
-      }
-
-      const result = searchKnowledge(question, currentAxis);
-
-      if (result) {
-        answerBox.innerText =
-          "المحور: " + result.axis + "\n\n" +
-          "السؤال المرتبط:\n" + result.question + "\n\n" +
-          "الإجابة:\n" + result.answer;
-      } else {
-        answerBox.innerText =
-          "لم أجد إجابة مباشرة داخل ملف المعرفة.\n\nجرّب إعادة صياغة السؤال أو أضف هذا السؤال داخل ملف knowledge.js ضمن محور:\n" +
-          currentAxis;
-      }
-    }
-
-    function searchKnowledge(question, axis) {
-      const cleanQuestion = normalizeText(question);
-
-      let filteredData = KNOWLEDGE_BASE;
-
-      if (axis !== "الرئيسية") {
-        filteredData = KNOWLEDGE_BASE.filter(item =>
-          normalizeText(item.axis).includes(normalizeText(axis))
-        );
-      }
-
-      let bestMatch = null;
-      let bestScore = 0;
-
-      filteredData.forEach(item => {
-        const combinedText = normalizeText(
-          item.axis + " " + item.question + " " + item.keywords.join(" ")
-        );
-
-        const words = cleanQuestion.split(" ");
-        let score = 0;
-
-        words.forEach(word => {
-          if (word.length > 2 && combinedText.includes(word)) {
-            score++;
-          }
-        });
-
-        if (score > bestScore) {
-          bestScore = score;
-          bestMatch = item;
-        }
-      });
-
-      return bestScore > 0 ? bestMatch : null;
-    }
-
-    function normalizeText(text) {
-      return text
-        .toString()
-        .toLowerCase()
-        .replace(/[أإآ]/g, "ا")
-        .replace(/ة/g, "ه")
-        .replace(/ى/g, "ي")
-        .replace(/[^\u0600-\u06FFa-zA-Z0-9 ]/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-    }
-  </script>
-</body>
-</html>
+<script>
+let DATA=null, currentAxis="الرئيسية";
+const axes=["الرئيسية","المفاهيم الأساسية للمحاسبة","مقومات النظام المحاسبي","تسجيل العمليات المالية","التعريف بالبرنامج المحاسبي وكيفية التعامل معه محاسبياً","التسجيل في البرنامج من خلال مستندات حقيقية","الشيكات ومستندات القبض والصرف والقيد والإشعارات البنكية","إعداد القوائم المالية","مذكرة التسوية وكشوف الرواتب والضمان","ضريبة الدخل والمبيعات والإقرارات الضريبية"];
+function buildMenu(){const m=document.getElementById('axisMenu');m.innerHTML='';axes.forEach(a=>{const b=document.createElement('button');b.className='axis-btn'+(a===currentAxis?' active':'');b.textContent=a;b.onclick=()=>selectAxis(a);m.appendChild(b);});}
+function selectAxis(axis){currentAxis=axis;document.getElementById('selectedAxis').innerText='المحور المختار: '+axis;buildMenu();document.getElementById('answer').innerText='تم اختيار محور: '+axis+'\nاكتب سؤالك الآن ليتم البحث ضمن هذا المحور.';}
+function normalizeText(t){return (t||'').toString().toLowerCase().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[ًٌٍَُِّْـ]/g,'').replace(/[^
