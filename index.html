@@ -1,165 +1,174 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>مساعد صرح المحاسبي الذكي Pro</title>
-  <style>
-    *{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}body{margin:0;background:#f5f5f5;color:#111827}.app{max-width:1250px;margin:35px auto;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.15)}header{background:linear-gradient(135deg,#5b0b0b,#b91c1c);color:#fff;padding:28px 20px;text-align:center}header h1{margin:0;font-size:34px}header p{margin:10px 0 0;font-size:15px}.layout{display:grid;grid-template-columns:300px 1fr;min-height:680px}aside{background:#fafafa;border-left:1px solid #e5e7eb;padding:22px}.axis-btn{width:100%;border:0;background:#fde2e2;color:#111;padding:13px 10px;margin-bottom:9px;border-radius:13px;cursor:pointer;font-size:14px;text-align:center;transition:.2s}.axis-btn:hover,.axis-btn.active{background:#b91c1c;color:#fff}main{padding:35px}.title{text-align:right;font-size:28px;margin-bottom:20px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:28px}.card{border:1px solid #e5e7eb;background:#f9fafb;border-radius:16px;padding:22px;min-height:130px}.card h3{margin-top:0;font-size:19px}.card p{line-height:1.8;font-size:14px}.chat-box{border:1px solid #e5e7eb;border-radius:18px;padding:20px;background:#f9fafb}.selected-axis{background:#fff;border:1px solid #ddd;border-radius:12px;padding:12px;margin-bottom:15px;color:#7f1d1d;font-weight:bold}textarea{width:100%;min-height:120px;resize:vertical;border:1px solid #d1d5db;border-radius:12px;padding:15px;font-size:15px;line-height:1.7;outline:none}button.ask{margin-top:12px;background:#b91c1c;color:#fff;border:0;padding:13px 28px;border-radius:12px;cursor:pointer;font-size:15px}.answer{margin-top:18px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;line-height:2;white-space:pre-line;min-height:90px}.result{border-top:1px solid #eee;padding-top:12px;margin-top:12px}.source{font-size:13px;color:#6b7280}.badges{margin-top:25px;display:flex;flex-wrap:wrap;gap:10px}.badge{background:#fde2e2;color:#991b1b;border-radius:999px;padding:9px 15px;font-size:13px}@media(max-width:800px){.layout{grid-template-columns:1fr}aside{border-left:0;border-bottom:1px solid #e5e7eb}header h1{font-size:25px}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>امتحان المحاسبة العملية - شركة صرح</title>
+<style>
+*{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}
+body{margin:0;background:#f4f6f8;color:#111}
+header{background:#7f1d1d;color:#fff;padding:25px;text-align:center}
+.container{max-width:1100px;margin:25px auto;background:#fff;padding:25px;border-radius:18px;box-shadow:0 10px 35px #0002}
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:20px}
+input,textarea,select{width:100%;padding:12px;border:1px solid #ccc;border-radius:10px;font-size:15px}
+textarea{min-height:130px;line-height:1.8}
+.question{border:1px solid #ddd;border-radius:15px;padding:20px;margin:18px 0;background:#fafafa}
+.question h2{margin-top:0;color:#7f1d1d}
+.note{background:#fff3cd;padding:12px;border-radius:10px;margin:10px 0}
+table{width:100%;border-collapse:collapse;margin:12px 0;background:white}
+th,td{border:1px solid #999;padding:8px;text-align:center}
+.mcq label{display:block;background:white;margin:8px 0;padding:10px;border-radius:8px;border:1px solid #ddd;cursor:pointer}
+button{background:#7f1d1d;color:white;border:0;padding:13px 25px;border-radius:10px;font-size:16px;cursor:pointer;margin:5px}
+button.secondary{background:#374151}
+.result{display:none;background:#ecfdf5;border:1px solid #10b981;padding:18px;border-radius:12px;margin-top:20px;font-size:18px}
+.timer{position:sticky;top:0;background:#111827;color:#fff;padding:12px;text-align:center;z-index:9}
+@media print{button,.timer{display:none}.container{box-shadow:none;margin:0}.question{page-break-inside:avoid}}
+</style>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <h1>مساعد صرح المحاسبي الذكي Pro</h1>
-      <p>منصة تدريب محاسبي مجانية: قيود، ضرائب، رواتب، تسويات، تحليل مالي، وشجرة حسابات</p>
-    </header>
-    <div class="layout">
-      <aside id="axisMenu"></aside>
-      <main>
-        <h2 class="title">لوحة التحكم الرئيسية</h2>
-        <div class="cards">
-          <div class="card"><h3>📘 البحث في المادة</h3><p>يبحث داخل ملف knowledge.json المستخرج من مادة المحاسبة العملية.</p></div>
-          <div class="card"><h3>📚 المحاور</h3><p>اختر المحور من القائمة، ثم اكتب سؤالك ليتم تضييق البحث داخله.</p></div>
-          <div class="card"><h3>🔎 بدون API</h3><p>يعمل على GitHub Pages مباشرة بدون اشتراك أو مفتاح API.</p></div>
-        </div>
-        <div class="chat-box">
-          <div class="selected-axis" id="selectedAxis">المحور المختار: الرئيسية</div>
-          <textarea id="question" placeholder="اكتب سؤالك هنا... مثال: ما هي معادلة الميزانية؟"></textarea>
-          <button class="ask" onclick="askAssistant()">اسأل المساعد</button>
-          <div class="answer" id="answer">جاري تحميل ملف المعرفة...</div>
-        </div>
-        <div class="badges"><span class="badge">مجاني 100%</span><span class="badge">بدون API</span><span class="badge">مرتبط مع knowledge.json</span><span class="badge">مناسب لدورة المحاسبة العملية</span></div>
-      </main>
-    </div>
-  </div>
-<script>
-let DATA = null;
-let currentAxis = "الرئيسية";
 
-const axes = [
-  "الرئيسية",
-  "المفاهيم الأساسية للمحاسبة",
-  "مقومات النظام المحاسبي",
-  "تسجيل العمليات المالية",
-  "التعريف بالبرنامج المحاسبي وكيفية التعامل معه محاسبياً",
-  "التسجيل في البرنامج من خلال مستندات حقيقية",
-  "الشيكات ومستندات القبض والصرف والقيد والإشعارات البنكية",
-  "إعداد القوائم المالية",
-  "مذكرة التسوية وكشوف الرواتب والضمان",
-  "ضريبة الدخل والمبيعات والإقرارات الضريبية"
+<header>
+<h1>امتحان دورة تأهيل المحاسبين لسوق العمل</h1>
+<p>شركة صرح العالمية للاستشارات والتدريب</p>
+</header>
+
+<div class="timer" id="timer">الوقت المتبقي: 02:00:00</div>
+
+<div class="container">
+<div class="info">
+<input id="studentName" placeholder="اسم المتدرب">
+<input id="studentId" placeholder="رقم المتدرب">
+<input id="date" type="date">
+</div>
+
+<form id="examForm">
+
+<div class="question">
+<h2>السؤال الأول - 20 علامة</h2>
+<p>سجل القيود التالية ثم رحّل حساب البنك:</p>
+<div class="note">
+10-1-2022 رأس مال 10000 دينار في البنك<br>
+17-1-2022 شراء أثاث ومكاتب 4000 دينار بشيك<br>
+30-1-2022 شراء قرطاسية 150 دينار نصفها بشيك ونصفها على الحساب<br>
+15-2-2022 إيراد خدمة 2000 دينار بشيك<br>
+28-2-2022 سداد مؤسسة النبا بشيك<br>
+15-3-2022 تقديم خدمة لشركة سلاسل 1500 دينار على الحساب<br>
+30-3-2022 قبض شيك مؤجل 1000 دينار يصرف بتاريخ 30-4-2022
+</div>
+<textarea name="q1" placeholder="اكتب قيود اليومية وترحيل حساب البنك هنا..."></textarea>
+</div>
+
+<div class="question">
+<h2>السؤال الثاني - 22 علامة</h2>
+<p>اعمل الميزانية العمومية بناءً على البيانات التالية:</p>
+<table>
+<tr><th>الحساب</th><th>المبلغ</th><th>الحساب</th><th>المبلغ</th></tr>
+<tr><td>النقدية</td><td>600</td><td>المباني</td><td>1000</td></tr>
+<tr><td>المدينين</td><td>250</td><td>قروض طويلة الأجل</td><td>510</td></tr>
+<tr><td>دائنين</td><td>800</td><td>رأس المال</td><td>2500</td></tr>
+<tr><td>بضاعة</td><td>140</td><td>أوراق دفع</td><td>660</td></tr>
+<tr><td>الأراضي</td><td>3000</td><td>شيكات برسم التحصيل</td><td>150</td></tr>
+<tr><td>شيكات مؤجلة الدفع</td><td>160</td><td>مصاريف مدفوعة مقدماً</td><td>200</td></tr>
+<tr><td>مصاريف إدارية وعمومية</td><td>450</td><td>تأمينات وكفالات</td><td>140</td></tr>
+<tr><td>جاري الشركاء</td><td>200</td><td>إيراد دورات مهنية</td><td>950</td></tr>
+<tr><td>احتياطي إجباري</td><td>150</td><td></td><td></td></tr>
+</table>
+<textarea name="q2" placeholder="اكتب الميزانية العمومية هنا..."></textarea>
+</div>
+
+<div class="question">
+<h2>السؤال الثالث - 10 علامات</h2>
+<p>سجل قيود الفواتير التالية:</p>
+<div class="note">
+الفاتورة الأولى: خدمات استشارات مالية 2500 دينار + ضريبة مبيعات 400 دينار، الإجمالي 2900 دينار، الدفع شيك.<br>
+الفاتورة الثانية: شراء أجهزة كمبيوتر وطابعة، المجموع قبل الضريبة 1660، ضريبة 265.6، الإجمالي 1925.6، المدفوع 700، الرصيد المستحق 1225.6.
+</div>
+<textarea name="q3" placeholder="اكتب قيود الفواتير هنا..."></textarea>
+</div>
+
+<div class="question">
+<h2>السؤال الرابع - 24 علامة</h2>
+<p>أكمل جدول الرواتب وأثبت القيود المطلوبة:</p>
+<table>
+<tr>
+<th>الموظف</th><th>الراتب الأساسي</th><th>بدل إضافي</th><th>تأمين صحي</th><th>سلف</th><th>اقتطاعات أخرى</th>
+</tr>
+<tr><td>لينا محمد</td><td>2100</td><td>100</td><td>0</td><td>0</td><td>3</td></tr>
+<tr><td>فيصل خليل</td><td>700</td><td>50</td><td>0</td><td>0</td><td>3</td></tr>
+<tr><td>عبدالله أحمد</td><td>750</td><td>50</td><td>0</td><td>50</td><td>3</td></tr>
+<tr><td>زيد خالد</td><td>900</td><td>100</td><td>0</td><td>40</td><td>3</td></tr>
+<tr><td>أنس عوض</td><td>220</td><td>50</td><td>0</td><td>0</td><td>3</td></tr>
+</table>
+<textarea name="q4" placeholder="أكمل جدول الرواتب والقيود: استحقاق الرواتب، حصة المنشأة، الدفع للضمان، دفع الرواتب..."></textarea>
+</div>
+
+<div class="question">
+<h2>السؤال الخامس - اختيار من متعدد - 24 علامة</h2>
+<div id="mcqBox"></div>
+</div>
+
+<button type="button" onclick="submitExam()">تسليم الامتحان</button>
+<button type="button" class="secondary" onclick="window.print()">طباعة / حفظ PDF</button>
+
+<div class="result" id="result"></div>
+</form>
+</div>
+
+<script>
+const mcq = [
+{q:"يظهر حساب أمانات ضريبة المبيعات في:",a:["الأصول","المطلوبات","المصاريف","حقوق الملكية"],c:1},
+{q:"إحدى النسب التالية لا تظهر في إقرار ضريبة المبيعات الإلكتروني:",a:["16%","4%","2%","10%"],c:2},
+{q:"يبدأ تسجيل المنشأة في ضريبة الدخل عند:",a:["الوصول إلى حد التسجيل","مبيعات 175 ألف","مبيعات 30 ألف","تسجيل المنشأة في الصناعة والتجارة"],c:3},
+{q:"إعفاءات ذوي الاحتياجات الخاصة السنوي هو:",a:["1000 دينار","1500 دينار","2000 دينار","2500 دينار"],c:2},
+{q:"إعفاءات الإيجار للمكلف هو:",a:["1000 دينار","1500 دينار","2000 دينار","2500 دينار"],c:0},
+{q:"إعفاءات الأولاد:",a:["1000 دينار لكل طفل بحد أقصى 3 أطفال","2000 دينار لكل طفل بحد أقصى 3 أطفال","1000 دينار لكل طفل بحد أقصى طفلين","2000 دينار لكل طفل بحد أقصى طفلين"],c:0},
+{q:"إعفاء الشخص الطبيعي الشهري هو:",a:["800 دينار","700 دينار","750 دينار","850 دينار"],c:0},
+{q:"إعفاء الشخص الطبيعي من الزراعة يكون:",a:["أول 500,000 إجمالي مبيعات","أول 700,000 إجمالي مبيعات","أول 1,000,000 إجمالي مبيعات","أول 1,500,000 إجمالي مبيعات"],c:0},
+{q:"إذا كان ملف المكلف من فئة المستخدمين فهو:",a:["موظف","شركة ذات مسؤولية محدودة","مؤسسة فردية","شركة تضامن"],c:0},
+{q:"نسبة ضريبة الدخل على البنوك هي:",a:["30%","35%","40%","45%"],c:1},
+{q:"يدفع الموظف نسبة ضريبة دخل 15% عندما يكون صافي الدخل الخاضع للضريبة بعد الإعفاءات هو:",a:["10000 دينار","من 10001 لغاية 15000 دينار","من 1 لغاية 9000 دينار","من 15001 لغاية 20000 دينار"],c:1},
+{q:"يبلغ حد التسجيل في ضريبة المبيعات للقطاع الخدمي:",a:["20000 دينار","25000 دينار","30000 دينار","35000 دينار"],c:2}
 ];
 
-function buildMenu() {
-  const m = document.getElementById("axisMenu");
-  m.innerHTML = "";
-  axes.forEach(a => {
-    const b = document.createElement("button");
-    b.className = "axis-btn" + (a === currentAxis ? " active" : "");
-    b.textContent = a;
-    b.onclick = () => selectAxis(a);
-    m.appendChild(b);
-  });
+function buildMCQ(){
+let box=document.getElementById("mcqBox");
+box.innerHTML="";
+mcq.forEach((item,i)=>{
+let html=`<div class="mcq"><p>${i+1}. ${item.q}</p>`;
+item.a.forEach((x,j)=>{
+html+=`<label><input type="radio" name="mcq${i}" value="${j}"> ${x}</label>`;
+});
+html+=`</div>`;
+box.innerHTML+=html;
+});
+}
+buildMCQ();
+
+function submitExam(){
+let score=0;
+mcq.forEach((item,i)=>{
+let ans=document.querySelector(`input[name="mcq${i}"]:checked`);
+if(ans && Number(ans.value)===item.c) score+=2;
+});
+let name=document.getElementById("studentName").value || "بدون اسم";
+document.getElementById("result").style.display="block";
+document.getElementById("result").innerHTML=
+`تم تسليم الامتحان للمتدرب: ${name}<br>
+علامة السؤال الخامس آلياً: ${score} من 24<br>
+باقي الأسئلة يتم تصحيحها يدوياً.`;
+localStorage.setItem("exam_"+name, new FormData(document.getElementById("examForm")));
 }
 
-function selectAxis(axis) {
-  currentAxis = axis;
-  document.getElementById("selectedAxis").innerText = "المحور المختار: " + axis;
-  buildMenu();
-  document.getElementById("answer").innerText =
-    "تم اختيار محور: " + axis + "\nاكتب سؤالك الآن.";
-}
-
-function normalizeText(t) {
-  return (t || "")
-    .toString()
-    .toLowerCase()
-    .replace(/[أإآ]/g, "ا")
-    .replace(/ة/g, "ه")
-    .replace(/ى/g, "ي")
-    .replace(/[ًٌٍَُِّْـ]/g, "")
-    .replace(/[^\u0600-\u06FFa-zA-Z0-9 ]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-async function loadKnowledge() {
-  try {
-    const res = await fetch("./knowledge.json?v=" + Date.now());
-    DATA = await res.json();
-    buildMenu();
-    document.getElementById("answer").innerText =
-      "تم تحميل ملف المعرفة بنجاح. اختر محوراً واكتب سؤالك.";
-  } catch (e) {
-    document.getElementById("answer").innerText =
-      "حدث خطأ في تحميل knowledge.json. تأكد أن الملف موجود بنفس مجلد index.html.";
-  }
-}
-
-function askAssistant() {
-  const q = document.getElementById("question").value.trim();
-  const answer = document.getElementById("answer");
-
-  if (!q) {
-    answer.innerText = "اكتب السؤال أولاً.";
-    return;
-  }
-
-  if (!DATA || !DATA.items) {
-    answer.innerText = "ملف المعرفة لم يتم تحميله بعد.";
-    return;
-  }
-
-  const qNorm = normalizeText(q);
-  const words = qNorm.split(" ").filter(w => w.length > 1);
-
-  let results = DATA.items.map(item => {
-    const axisText = normalizeText(item.axis || "");
-    const titleText = normalizeText(item.title || "");
-    const questionText = normalizeText(item.question || "");
-    const answerText = normalizeText(item.answer || "");
-    const contentText = normalizeText(item.content || "");
-    const keywordsText = normalizeText((item.keywords || []).join(" "));
-
-    const fullText = axisText + " " + titleText + " " + questionText + " " + answerText + " " + contentText + " " + keywordsText;
-
-    let score = 0;
-
-    words.forEach(w => {
-      if (titleText.includes(w)) score += 5;
-      if (questionText.includes(w)) score += 5;
-      if (keywordsText.includes(w)) score += 6;
-      if (answerText.includes(w)) score += 3;
-      if (contentText.includes(w)) score += 2;
-      if (axisText.includes(w)) score += 1;
-    });
-
-    if (fullText.includes(qNorm)) score += 20;
-
-    if (currentAxis !== "الرئيسية" && axisText.includes(normalizeText(currentAxis))) {
-      score += 5;
-    }
-
-    return { item, score };
-  })
-  .filter(r => r.score > 0)
-  .sort((a, b) => b.score - a.score)
-  .slice(0, 3);
-
-  if (results.length === 0) {
-    answer.innerText = "لم أجد إجابة مباشرة. جرّب كتابة كلمة مثل: رواتب، قيد الرواتب، مصروف الرواتب.";
-    return;
-  }
-
-  answer.innerHTML = results.map(r => `
-    <div class="result">
-      <strong>${r.item.title || r.item.question || "نتيجة"}</strong>
-      <div>${r.item.answer || r.item.content || ""}</div>
-      <div class="source">المحور: ${r.item.axis || ""} - الصفحة: ${r.item.page || ""}</div>
-    </div>
-  `).join("");
-}
-  
-buildMenu();
-loadKnowledge();
+let seconds=2*60*60;
+setInterval(()=>{
+seconds--;
+let h=String(Math.floor(seconds/3600)).padStart(2,"0");
+let m=String(Math.floor((seconds%3600)/60)).padStart(2,"0");
+let s=String(seconds%60).padStart(2,"0");
+document.getElementById("timer").innerText=`الوقت المتبقي: ${h}:${m}:${s}`;
+if(seconds<=0){submitExam(); alert("انتهى الوقت");}
+},1000);
 </script>
+
+</body>
+</html>
