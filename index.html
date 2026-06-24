@@ -2,361 +2,403 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>امتحان المحاسبة العملية</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>امتحان صرح</title>
 
 <style>
-*{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}
-body{margin:0;background:#f3f4f6;color:#111827}
-header{background:linear-gradient(135deg,#7f1d1d,#b91c1c);color:white;text-align:center;padding:25px}
-.container{max-width:1100px;margin:25px auto;background:white;padding:25px;border-radius:18px;box-shadow:0 15px 40px #0002}
-.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:20px}
-input{padding:12px;border:1px solid #ccc;border-radius:10px;font-size:15px}
-.page{display:none}
-.page.active{display:block}
-.question{background:#fafafa;border:1px solid #ddd;border-radius:15px;padding:18px;margin:18px 0}
-.question h2{color:#7f1d1d;margin-top:0}
-.mcq{background:white;border:1px solid #e5e7eb;border-radius:12px;padding:15px;margin:12px 0}
-.mcq p{font-weight:bold;line-height:1.8}
-label{display:block;border:1px solid #ddd;border-radius:10px;padding:10px;margin:8px 0;cursor:pointer;background:#fff}
-label:hover{background:#fef2f2}
-.navigation{text-align:center;margin-top:25px}
-button{background:#7f1d1d;color:white;border:0;border-radius:10px;padding:13px 28px;font-size:16px;cursor:pointer;margin:5px}
-.secondary{background:#374151}
-.result{display:none;background:#ecfdf5;border:1px solid #10b981;border-radius:12px;padding:18px;margin-top:20px;font-size:18px;line-height:2}
-.timer{position:sticky;top:0;background:#111827;color:white;text-align:center;padding:12px;z-index:10}
-.progress{background:#e5e7eb;border-radius:999px;height:14px;margin-bottom:15px;overflow:hidden}
-.progress-bar{background:#7f1d1d;height:100%;width:20%;transition:.3s}
-.page-title{text-align:center;color:#7f1d1d;margin-bottom:10px}
-.correct{background:#dcfce7!important;border-color:#22c55e!important}
-.wrong{background:#fee2e2!important;border-color:#ef4444!important}
-@media print{button,.timer,.navigation,.progress{display:none}.container{box-shadow:none;margin:0}.page{display:block}}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Tahoma;
+}
+
+body{
+background:#f4f4f4;
+}
+
+.container{
+max-width:900px;
+margin:30px auto;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.1);
+}
+
+.question-image{
+width:100%;
+border-radius:15px;
+margin-bottom:20px;
+border:1px solid #ddd;
+}
+
+.option{
+display:block;
+margin-bottom:12px;
+cursor:pointer;
+}
+
+.option input{
+display:none;
+}
+
+.option span{
+display:block;
+padding:15px;
+border:2px solid #ddd;
+border-radius:12px;
+background:white;
+transition:.3s;
+font-size:18px;
+}
+
+.option input:checked + span{
+background:#7f1d1d;
+color:white;
+border-color:#7f1d1d;
+}
+
+.navigation{
+margin-top:25px;
+display:flex;
+justify-content:space-between;
+}
+
+button{
+background:#7f1d1d;
+color:white;
+border:none;
+padding:12px 25px;
+border-radius:10px;
+cursor:pointer;
+font-size:16px;
+}
+
+.progress{
+height:12px;
+background:#ddd;
+border-radius:999px;
+margin-bottom:20px;
+overflow:hidden;
+}
+
+.progress-bar{
+height:100%;
+width:20%;
+background:#7f1d1d;
+transition:.3s;
+}
+
+.page{
+display:none;
+}
+
+.page.active{
+display:block;
+}
+
+.result{
+display:none;
+margin-top:20px;
+padding:20px;
+background:#ecfdf5;
+border-radius:12px;
+font-size:20px;
+text-align:center;
+}
+
 </style>
 </head>
-
 <body>
-
-<header>
-<h1>امتحان دورة تأهيل المحاسبين لسوق العمل</h1>
-<p>شركة صرح العالمية للاستشارات والتدريب</p>
-</header>
-
-<div class="timer" id="timer">الوقت المتبقي: 02:00:00</div>
 
 <div class="container">
 
-<div class="info">
-<input id="studentName" placeholder="اسم المتدرب">
-<input id="studentId" placeholder="رقم المتدرب">
-<input id="examDate" type="date">
-</div>
-
 <div class="progress">
-<div class="progress-bar" id="progressBar"></div>
+<div class="progress-bar" id="bar"></div>
 </div>
 
-<h3 class="page-title" id="pageTitle">السؤال 1 من 5</h3>
+<form id="exam">
 
-<form id="examForm">
+<!-- سؤال 1 -->
 
-<section class="page active" id="page1">
-<div class="question">
-<h2>السؤال الأول: قيود العمليات وترحيل البنك - 20 علامة</h2>
-<div id="q1Box"></div>
+<div class="page active">
+
+<div class="card">
+
+<img src="images/q1.png" class="question-image">
+
+<label class="option">
+<input type="radio" name="q1" value="0">
+<span>الخيار الأول</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q1" value="1">
+<span>الخيار الثاني</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q1" value="2">
+<span>الخيار الثالث</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q1" value="3">
+<span>الخيار الرابع</span>
+</label>
+
 </div>
-</section>
 
-<section class="page" id="page2">
-<div class="question">
-<h2>السؤال الثاني: الميزانية العمومية - 22 علامة</h2>
-<div id="q2Box"></div>
 </div>
-</section>
 
-<section class="page" id="page3">
-<div class="question">
-<h2>السؤال الثالث: قيود الفواتير - 10 علامات</h2>
-<div id="q3Box"></div>
-</div>
-</section>
+<!-- سؤال 2 -->
 
-<section class="page" id="page4">
-<div class="question">
-<h2>السؤال الرابع: الرواتب والضمان الاجتماعي - 24 علامة</h2>
-<div id="q4Box"></div>
-</div>
-</section>
+<div class="page">
 
-<section class="page" id="page5">
-<div class="question">
-<h2>السؤال الخامس: ضريبة الدخل والمبيعات - 24 علامة</h2>
-<div id="q5Box"></div>
+<div class="card">
+
+<img src="images/q2.jpg" class="question-image">
+
+<label class="option">
+<input type="radio" name="q2" value="0">
+<span>الخيار الأول</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q2" value="1">
+<span>الخيار الثاني</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q2" value="2">
+<span>الخيار الثالث</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q2" value="3">
+<span>الخيار الرابع</span>
+</label>
+
 </div>
-</section>
+
+</div>
+
+<!-- سؤال 3 -->
+
+<div class="page">
+
+<div class="card">
+
+<img src="images/q3.jpg" class="question-image">
+
+<label class="option">
+<input type="radio" name="q3" value="0">
+<span>الخيار الأول</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q3" value="1">
+<span>الخيار الثاني</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q3" value="2">
+<span>الخيار الثالث</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q3" value="3">
+<span>الخيار الرابع</span>
+</label>
+
+</div>
+
+</div>
+
+<!-- سؤال 4 -->
+
+<div class="page">
+
+<div class="card">
+
+<img src="images/q4.jpg" class="question-image">
+
+<label class="option">
+<input type="radio" name="q4" value="0">
+<span>الخيار الأول</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q4" value="1">
+<span>الخيار الثاني</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q4" value="2">
+<span>الخيار الثالث</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q4" value="3">
+<span>الخيار الرابع</span>
+</label>
+
+</div>
+
+</div>
+
+<!-- سؤال 5 -->
+
+<div class="page">
+
+<div class="card">
+
+<img src="images/q5.jpg" class="question-image">
+
+<label class="option">
+<input type="radio" name="q5" value="0">
+<span>الخيار الأول</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q5" value="1">
+<span>الخيار الثاني</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q5" value="2">
+<span>الخيار الثالث</span>
+</label>
+
+<label class="option">
+<input type="radio" name="q5" value="3">
+<span>الخيار الرابع</span>
+</label>
+
+</div>
+
+</div>
 
 <div class="navigation">
-<button type="button" class="secondary" id="prevBtn" onclick="prevPage()">السابق</button>
-<button type="button" id="nextBtn" onclick="nextPage()">التالي</button>
-<button type="button" id="submitBtn" onclick="submitExam()" style="display:none">تسليم الامتحان</button>
-<button type="button" class="secondary" onclick="window.print()">طباعة / حفظ PDF</button>
+
+<button type="button" onclick="prevPage()">
+السابق
+</button>
+
+<button type="button" id="nextBtn" onclick="nextPage()">
+التالي
+</button>
+
+<button type="button" id="submitBtn" onclick="submitExam()" style="display:none">
+تسليم الامتحان
+</button>
+
 </div>
 
 <div class="result" id="result"></div>
 
 </form>
+
 </div>
 
 <script>
-const questions = [
 
-{box:"q1Box", q:"في 10-1-2022 بدأت الشركة أعمالها برأس مال 10000 دينار أودع في البنك، ما القيد الصحيح؟",
-a:["من حـ/ البنك 10000 إلى حـ/ رأس المال 10000","من حـ/ رأس المال 10000 إلى حـ/ البنك 10000","من حـ/ الصندوق 10000 إلى حـ/ الإيرادات 10000","من حـ/ البنك 10000 إلى حـ/ الدائنين 10000"], c:0},
+let page=0;
 
-{box:"q1Box", q:"شراء أثاث ومكاتب بقيمة 4000 دينار دفعت بشيك، ما القيد الصحيح؟",
-a:["من حـ/ البنك إلى حـ/ الأثاث","من حـ/ الأثاث والمكاتب 4000 إلى حـ/ البنك 4000","من حـ/ المصاريف إلى حـ/ رأس المال","من حـ/ الأثاث إلى حـ/ الدائنين"], c:1},
+const pages=document.querySelectorAll(".page");
 
-{box:"q1Box", q:"شراء قرطاسية 150 دينار، نصفها بشيك ونصفها على الحساب، ما القيد الصحيح؟",
-a:["من حـ/ القرطاسية 150 إلى مذكورين: البنك 75 والدائنين 75","من حـ/ البنك 150 إلى حـ/ القرطاسية 150","من حـ/ الدائنين 150 إلى حـ/ البنك 150","من حـ/ القرطاسية 75 إلى حـ/ البنك 150"], c:0},
+function showPage(){
 
-{box:"q1Box", q:"تحصيل 2000 دينار مقابل خدمة واستلام المبلغ بشيك، ما القيد الصحيح؟",
-a:["من حـ/ إيراد الخدمات إلى حـ/ البنك","من حـ/ البنك 2000 إلى حـ/ إيراد الخدمات 2000","من حـ/ المدينين إلى حـ/ الإيراد","من حـ/ الصندوق إلى حـ/ رأس المال"], c:1},
+pages.forEach(p=>p.classList.remove("active"));
 
-{box:"q1Box", q:"سداد المبلغ المستحق لمؤسسة النبا بشيك، ما القيد الصحيح؟",
-a:["من حـ/ الدائنين 75 إلى حـ/ البنك 75","من حـ/ البنك 75 إلى حـ/ الدائنين 75","من حـ/ القرطاسية 75 إلى حـ/ البنك 75","من حـ/ المصاريف إلى حـ/ الإيرادات"], c:0},
+pages[page].classList.add("active");
 
-{box:"q1Box", q:"تقديم خدمة لشركة سلاسل بقيمة 1500 دينار على الحساب، ما القيد الصحيح؟",
-a:["من حـ/ البنك إلى حـ/ الإيراد","من حـ/ المدينين 1500 إلى حـ/ إيراد الخدمات 1500","من حـ/ الإيراد إلى حـ/ المدينين","من حـ/ الصندوق إلى حـ/ الإيراد"], c:1},
+document.getElementById("bar").style.width=
+((page+1)/pages.length*100)+"%";
 
-{box:"q1Box", q:"استلام شيك مؤجل بقيمة 1000 دينار يصرف بتاريخ لاحق، ما الحساب المدين؟",
-a:["البنك","الصندوق","شيكات برسم التحصيل","رأس المال"], c:2},
+document.getElementById("nextBtn").style.display=
+page===pages.length-1 ? "none":"block";
 
-{box:"q1Box", q:"رصيد حساب البنك بعد العمليات هو:",
-a:["7900 دينار","7850 دينار","8000 دينار","5925 دينار"], c:1},
+document.getElementById("submitBtn").style.display=
+page===pages.length-1 ? "block":"none";
 
-{box:"q2Box", q:"أي من الحسابات التالية يعتبر من الأصول المتداولة؟",
-a:["النقدية","رأس المال","قروض طويلة الأجل","دائنين"], c:0},
-
-{box:"q2Box", q:"أي من الحسابات التالية يعتبر من الأصول الثابتة؟",
-a:["المدينين","المباني","دائنين","إيراد دورات مهنية"], c:1},
-
-{box:"q2Box", q:"المدينون يظهرون في الميزانية ضمن:",
-a:["الأصول","الخصوم","حقوق الملكية","الإيرادات"], c:0},
-
-{box:"q2Box", q:"القروض طويلة الأجل تظهر ضمن:",
-a:["الأصول المتداولة","الخصوم طويلة الأجل","الإيرادات","المصاريف"], c:1},
-
-{box:"q2Box", q:"رأس المال يظهر ضمن:",
-a:["الأصول","المصاريف","حقوق الملكية","الخصوم المتداولة"], c:2},
-
-{box:"q2Box", q:"أوراق الدفع تظهر ضمن:",
-a:["الأصول","الخصوم","المصاريف","الإيرادات"], c:1},
-
-{box:"q2Box", q:"المصاريف المدفوعة مقدماً تظهر ضمن:",
-a:["الأصول","الخصوم","حقوق الملكية","الإيرادات"], c:0},
-
-{box:"q2Box", q:"إيراد الدورات المهنية يؤثر على:",
-a:["زيادة حقوق الملكية","زيادة الخصوم","نقص الأصول","لا يظهر نهائياً"], c:0},
-
-{box:"q2Box", q:"المصاريف الإدارية والعمومية تؤثر على:",
-a:["تخفيض حقوق الملكية","زيادة الخصوم","زيادة رأس المال","زيادة الإيرادات"], c:0},
-
-{box:"q2Box", q:"الاحتياطي الإجباري يظهر ضمن:",
-a:["الأصول","الخصوم","حقوق الملكية","المصاريف"], c:2},
-
-{box:"q2Box", q:"الشيكات برسم التحصيل تعتبر:",
-a:["أصل","خصم","إيراد","مصروف"], c:0},
-
-{box:"q3Box", q:"فاتورة خدمات استشارات بقيمة 2500 وضريبة مبيعات 400، الإجمالي 2900، الدفع بشيك. ما الطرف المدين؟",
-a:["البنك 2900","المدينون 2900","إيراد الخدمات 2900","ضريبة المبيعات 400"], c:0},
-
-{box:"q3Box", q:"في فاتورة المبيعات، ضريبة المبيعات تعتبر:",
-a:["أصل","مصروف","أمانات / مطلوبات","حقوق ملكية"], c:2},
-
-{box:"q3Box", q:"القيد الصحيح لفاتورة المبيعات هو:",
-a:["من حـ/ البنك 2900 إلى مذكورين: إيراد خدمات 2500 وأمانات ضريبة مبيعات 400","من حـ/ الإيراد 2900 إلى حـ/ البنك 2900","من حـ/ الضريبة 400 إلى حـ/ البنك 400","من حـ/ البنك 2500 إلى حـ/ الإيراد 2900"], c:0},
-
-{box:"q3Box", q:"فاتورة شراء أجهزة بقيمة 1660 وضريبة 265.6، ما إجمالي الفاتورة؟",
-a:["1660","1925.6","1225.6","700"], c:1},
-
-{box:"q3Box", q:"إذا تم دفع 700 من فاتورة مجموعها 1925.6، فإن الرصيد المستحق هو:",
-a:["265.6","1660","1225.6","1925.6"], c:2},
-
-{box:"q3Box", q:"ضريبة المبيعات على المشتريات تظهر غالباً ضمن:",
-a:["ضريبة قابلة للخصم","رأس المال","الإيرادات","المبيعات"], c:0},
-
-{box:"q4Box", q:"إجمالي راتب لينا محمد إذا كان الأساسي 2100 والبدل 100 هو:",
-a:["2100","2200","2000","2300"], c:1},
-
-{box:"q4Box", q:"إجمالي راتب فيصل خليل إذا كان الأساسي 700 والبدل 50 هو:",
-a:["750","700","650","800"], c:0},
-
-{box:"q4Box", q:"إجمالي راتب عبدالله أحمد إذا كان الأساسي 750 والبدل 50 هو:",
-a:["700","750","800","850"], c:2},
-
-{box:"q4Box", q:"إجمالي راتب زيد خالد إذا كان الأساسي 900 والبدل 100 هو:",
-a:["900","950","1000","1100"], c:2},
-
-{box:"q4Box", q:"إجمالي راتب أنس عوض إذا كان الأساسي 220 والبدل 50 هو:",
-a:["220","250","270","300"], c:2},
-
-{box:"q4Box", q:"إجمالي الرواتب لجميع الموظفين هو:",
-a:["4670","5020","350","5000"], c:1},
-
-{box:"q4Box", q:"إذا كانت نسبة ضمان الموظف 7.5%، فإن ضمان لينا على راتب 2200 يساوي:",
-a:["150","165","170","160"], c:1},
-
-{box:"q4Box", q:"إذا كانت نسبة ضمان الموظف 7.5%، فإن ضمان فيصل على راتب 750 يساوي تقريباً:",
-a:["56.25","75","50","60"], c:0},
-
-{box:"q4Box", q:"قيد استحقاق الرواتب يجعل مصروف الرواتب:",
-a:["مدين","دائن","لا يظهر","حقوق ملكية"], c:0},
-
-{box:"q4Box", q:"صافي الراتب المستحق يساوي:",
-a:["إجمالي الراتب + الاقتطاعات","إجمالي الراتب - إجمالي الاقتطاعات","الراتب الأساسي فقط","البدل الإضافي فقط"], c:1},
-
-{box:"q4Box", q:"حصة صاحب العمل من الضمان الاجتماعي تعتبر:",
-a:["مصروف على المنشأة","إيراد","أصل ثابت","رأس مال"], c:0},
-
-{box:"q4Box", q:"عند دفع الرواتب للموظفين يكون الحساب الدائن غالباً:",
-a:["البنك","مصروف الرواتب","رأس المال","إيرادات"], c:0},
-
-{box:"q5Box", q:"يظهر حساب أمانات ضريبة المبيعات في:",
-a:["الأصول","المطلوبات","المصاريف","حقوق الملكية"], c:1},
-
-{box:"q5Box", q:"إحدى النسب التالية لا تظهر في إقرار ضريبة المبيعات الإلكتروني:",
-a:["16%","4%","2%","10%"], c:2},
-
-{box:"q5Box", q:"يبدأ تسجيل المنشأة في ضريبة الدخل عند:",
-a:["الوصول إلى حد التسجيل","مبيعات 175 ألف","مبيعات 30 ألف","تسجيل المنشأة في الصناعة والتجارة"], c:3},
-
-{box:"q5Box", q:"إعفاءات ذوي الاحتياجات الخاصة السنوي هو:",
-a:["1000 دينار","1500 دينار","2000 دينار","2500 دينار"], c:2},
-
-{box:"q5Box", q:"إعفاءات الإيجار للمكلف هو:",
-a:["1000 دينار","1500 دينار","2000 دينار","2500 دينار"], c:0},
-
-{box:"q5Box", q:"إعفاءات الأولاد:",
-a:["1000 دينار لكل طفل بحد أقصى 3 أطفال","2000 دينار لكل طفل بحد أقصى 3 أطفال","1000 دينار لكل طفل بحد أقصى طفلين","2000 دينار لكل طفل بحد أقصى طفلين"], c:0},
-
-{box:"q5Box", q:"إعفاء الشخص الطبيعي الشهري هو:",
-a:["800 دينار","700 دينار","750 دينار","850 دينار"], c:0},
-
-{box:"q5Box", q:"إعفاء الشخص الطبيعي من الزراعة يكون:",
-a:["أول 500,000 إجمالي مبيعات","أول 700,000 إجمالي مبيعات","أول 1,000,000 إجمالي مبيعات","أول 1,500,000 إجمالي مبيعات"], c:0},
-
-{box:"q5Box", q:"إذا كان ملف المكلف من فئة المستخدمين فهو:",
-a:["موظف","شركة ذات مسؤولية محدودة","مؤسسة فردية","شركة تضامن"], c:0},
-
-{box:"q5Box", q:"نسبة ضريبة الدخل على البنوك هي:",
-a:["30%","35%","40%","45%"], c:1},
-
-{box:"q5Box", q:"يدفع الموظف نسبة ضريبة دخل 15% عندما يكون صافي الدخل الخاضع للضريبة بعد الإعفاءات هو:",
-a:["10000 دينار","من 10001 لغاية 15000 دينار","من 1 لغاية 9000 دينار","من 15001 لغاية 20000 دينار"], c:1},
-
-{box:"q5Box", q:"يبلغ حد التسجيل في ضريبة المبيعات للقطاع الخدمي:",
-a:["20000 دينار","25000 دينار","30000 دينار","35000 دينار"], c:2}
-
-];
-
-function buildExam(){
-questions.forEach((item,i)=>{
-const box=document.getElementById(item.box);
-let html=`<div class="mcq" id="mcq${i}">
-<p>${i+1}. ${item.q}</p>`;
-item.a.forEach((ans,j)=>{
-html+=`
-<label>
-<input type="radio" name="q${i}" value="${j}">
-${ans}
-</label>`;
-});
-html+=`</div>`;
-box.innerHTML+=html;
-});
-}
-
-let currentPage = 1;
-const totalPages = 5;
-
-function showPage(page){
-document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-document.getElementById("page"+page).classList.add("active");
-
-document.getElementById("prevBtn").style.display = page===1 ? "none" : "inline-block";
-document.getElementById("nextBtn").style.display = page===totalPages ? "none" : "inline-block";
-document.getElementById("submitBtn").style.display = page===totalPages ? "inline-block" : "none";
-
-document.getElementById("pageTitle").innerText = "السؤال " + page + " من " + totalPages;
-document.getElementById("progressBar").style.width = (page / totalPages * 100) + "%";
-
-window.scrollTo({top:0, behavior:"smooth"});
 }
 
 function nextPage(){
-if(currentPage < totalPages){
-currentPage++;
-showPage(currentPage);
+
+if(page<pages.length-1){
+
+page++;
+
+showPage();
+
 }
+
 }
 
 function prevPage(){
-if(currentPage > 1){
-currentPage--;
-showPage(currentPage);
+
+if(page>0){
+
+page--;
+
+showPage();
+
 }
+
 }
 
 function submitExam(){
+
+const answers={
+q1:2,
+q2:1,
+q3:0,
+q4:3,
+q5:2
+};
+
 let score=0;
 
-questions.forEach((item,i)=>{
-let selected=document.querySelector(`input[name="q${i}"]:checked`);
-let labels=document.querySelectorAll(`#mcq${i} label`);
+for(let q in answers){
 
-labels.forEach((label,index)=>{
-label.classList.remove("correct","wrong");
-if(index===item.c) label.classList.add("correct");
-});
+const selected=document.querySelector(
+`input[name="${q}"]:checked`
+);
 
 if(selected){
-if(Number(selected.value)===item.c){
-score++;
-}else{
-labels[Number(selected.value)].classList.add("wrong");
-}
-}
-});
 
-let percentage=Math.round((score/questions.length)*100);
-let name=document.getElementById("studentName").value || "بدون اسم";
+if(Number(selected.value)===answers[q]){
+
+score++;
+
+}
+
+}
+
+}
 
 document.getElementById("result").style.display="block";
+
 document.getElementById("result").innerHTML=
-`اسم المتدرب: ${name}<br>
-عدد الإجابات الصحيحة: ${score} من ${questions.length}<br>
-النسبة: ${percentage}%`;
+`النتيجة: ${score} / 5`;
 
-window.scrollTo({top:document.body.scrollHeight, behavior:"smooth"});
+window.scrollTo({
+top:document.body.scrollHeight,
+behavior:"smooth"
+});
+
 }
 
-buildExam();
-showPage(1);
+showPage();
 
-let seconds=2*60*60;
-let timer=setInterval(()=>{
-seconds--;
-let h=String(Math.floor(seconds/3600)).padStart(2,"0");
-let m=String(Math.floor((seconds%3600)/60)).padStart(2,"0");
-let s=String(seconds%60).padStart(2,"0");
-
-document.getElementById("timer").innerText=`الوقت المتبقي: ${h}:${m}:${s}`;
-
-if(seconds<=0){
-clearInterval(timer);
-submitExam();
-alert("انتهى الوقت وتم تسليم الامتحان");
-}
-},1000);
 </script>
 
 </body>
