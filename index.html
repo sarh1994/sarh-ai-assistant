@@ -3,28 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>امتحان المحاسبة العملية - شركة صرح</title>
+<title>امتحان المحاسبة العملية</title>
+
 <style>
 *{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}
-body{margin:0;background:#f4f6f8;color:#111}
-header{background:#7f1d1d;color:#fff;padding:25px;text-align:center}
-.container{max-width:1100px;margin:25px auto;background:#fff;padding:25px;border-radius:18px;box-shadow:0 10px 35px #0002}
+body{margin:0;background:#f3f4f6;color:#111827}
+header{background:linear-gradient(135deg,#7f1d1d,#b91c1c);color:white;text-align:center;padding:25px}
+.container{max-width:1100px;margin:25px auto;background:white;padding:25px;border-radius:18px;box-shadow:0 15px 40px #0002}
 .info{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:20px}
-input,textarea,select{width:100%;padding:12px;border:1px solid #ccc;border-radius:10px;font-size:15px}
-textarea{min-height:130px;line-height:1.8}
-.question{border:1px solid #ddd;border-radius:15px;padding:20px;margin:18px 0;background:#fafafa}
-.question h2{margin-top:0;color:#7f1d1d}
-.note{background:#fff3cd;padding:12px;border-radius:10px;margin:10px 0}
-table{width:100%;border-collapse:collapse;margin:12px 0;background:white}
-th,td{border:1px solid #999;padding:8px;text-align:center}
-.mcq label{display:block;background:white;margin:8px 0;padding:10px;border-radius:8px;border:1px solid #ddd;cursor:pointer}
-button{background:#7f1d1d;color:white;border:0;padding:13px 25px;border-radius:10px;font-size:16px;cursor:pointer;margin:5px}
-button.secondary{background:#374151}
-.result{display:none;background:#ecfdf5;border:1px solid #10b981;padding:18px;border-radius:12px;margin-top:20px;font-size:18px}
-.timer{position:sticky;top:0;background:#111827;color:#fff;padding:12px;text-align:center;z-index:9}
-@media print{button,.timer{display:none}.container{box-shadow:none;margin:0}.question{page-break-inside:avoid}}
+input{padding:12px;border:1px solid #ccc;border-radius:10px;font-size:15px}
+.question{background:#fafafa;border:1px solid #ddd;border-radius:15px;padding:18px;margin:18px 0}
+.question h2{color:#7f1d1d;margin-top:0}
+.mcq{background:white;border:1px solid #e5e7eb;border-radius:12px;padding:15px;margin:12px 0}
+.mcq p{font-weight:bold;line-height:1.8}
+label{display:block;border:1px solid #ddd;border-radius:10px;padding:10px;margin:8px 0;cursor:pointer;background:#fff}
+label:hover{background:#fef2f2}
+button{background:#7f1d1d;color:white;border:0;border-radius:10px;padding:13px 25px;font-size:16px;cursor:pointer;margin:5px}
+.secondary{background:#374151}
+.result{display:none;background:#ecfdf5;border:1px solid #10b981;border-radius:12px;padding:18px;margin-top:20px;font-size:18px;line-height:2}
+.timer{position:sticky;top:0;background:#111827;color:white;text-align:center;padding:12px;z-index:10}
+.correct{background:#dcfce7!important;border-color:#22c55e!important}
+.wrong{background:#fee2e2!important;border-color:#ef4444!important}
+@media print{button,.timer{display:none}.container{box-shadow:none;margin:0}}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -35,138 +38,269 @@ button.secondary{background:#374151}
 <div class="timer" id="timer">الوقت المتبقي: 02:00:00</div>
 
 <div class="container">
+
 <div class="info">
 <input id="studentName" placeholder="اسم المتدرب">
 <input id="studentId" placeholder="رقم المتدرب">
-<input id="date" type="date">
+<input id="examDate" type="date">
 </div>
 
 <form id="examForm">
 
 <div class="question">
-<h2>السؤال الأول - 20 علامة</h2>
-<p>سجل القيود التالية ثم رحّل حساب البنك:</p>
-<div class="note">
-10-1-2022 رأس مال 10000 دينار في البنك<br>
-17-1-2022 شراء أثاث ومكاتب 4000 دينار بشيك<br>
-30-1-2022 شراء قرطاسية 150 دينار نصفها بشيك ونصفها على الحساب<br>
-15-2-2022 إيراد خدمة 2000 دينار بشيك<br>
-28-2-2022 سداد مؤسسة النبا بشيك<br>
-15-3-2022 تقديم خدمة لشركة سلاسل 1500 دينار على الحساب<br>
-30-3-2022 قبض شيك مؤجل 1000 دينار يصرف بتاريخ 30-4-2022
-</div>
-<textarea name="q1" placeholder="اكتب قيود اليومية وترحيل حساب البنك هنا..."></textarea>
+<h2>السؤال الأول: قيود العمليات وترحيل البنك - 20 علامة</h2>
+<div id="q1Box"></div>
 </div>
 
 <div class="question">
-<h2>السؤال الثاني - 22 علامة</h2>
-<p>اعمل الميزانية العمومية بناءً على البيانات التالية:</p>
-<table>
-<tr><th>الحساب</th><th>المبلغ</th><th>الحساب</th><th>المبلغ</th></tr>
-<tr><td>النقدية</td><td>600</td><td>المباني</td><td>1000</td></tr>
-<tr><td>المدينين</td><td>250</td><td>قروض طويلة الأجل</td><td>510</td></tr>
-<tr><td>دائنين</td><td>800</td><td>رأس المال</td><td>2500</td></tr>
-<tr><td>بضاعة</td><td>140</td><td>أوراق دفع</td><td>660</td></tr>
-<tr><td>الأراضي</td><td>3000</td><td>شيكات برسم التحصيل</td><td>150</td></tr>
-<tr><td>شيكات مؤجلة الدفع</td><td>160</td><td>مصاريف مدفوعة مقدماً</td><td>200</td></tr>
-<tr><td>مصاريف إدارية وعمومية</td><td>450</td><td>تأمينات وكفالات</td><td>140</td></tr>
-<tr><td>جاري الشركاء</td><td>200</td><td>إيراد دورات مهنية</td><td>950</td></tr>
-<tr><td>احتياطي إجباري</td><td>150</td><td></td><td></td></tr>
-</table>
-<textarea name="q2" placeholder="اكتب الميزانية العمومية هنا..."></textarea>
+<h2>السؤال الثاني: الميزانية العمومية - 22 علامة</h2>
+<div id="q2Box"></div>
 </div>
 
 <div class="question">
-<h2>السؤال الثالث - 10 علامات</h2>
-<p>سجل قيود الفواتير التالية:</p>
-<div class="note">
-الفاتورة الأولى: خدمات استشارات مالية 2500 دينار + ضريبة مبيعات 400 دينار، الإجمالي 2900 دينار، الدفع شيك.<br>
-الفاتورة الثانية: شراء أجهزة كمبيوتر وطابعة، المجموع قبل الضريبة 1660، ضريبة 265.6، الإجمالي 1925.6، المدفوع 700، الرصيد المستحق 1225.6.
-</div>
-<textarea name="q3" placeholder="اكتب قيود الفواتير هنا..."></textarea>
+<h2>السؤال الثالث: قيود الفواتير - 10 علامات</h2>
+<div id="q3Box"></div>
 </div>
 
 <div class="question">
-<h2>السؤال الرابع - 24 علامة</h2>
-<p>أكمل جدول الرواتب وأثبت القيود المطلوبة:</p>
-<table>
-<tr>
-<th>الموظف</th><th>الراتب الأساسي</th><th>بدل إضافي</th><th>تأمين صحي</th><th>سلف</th><th>اقتطاعات أخرى</th>
-</tr>
-<tr><td>لينا محمد</td><td>2100</td><td>100</td><td>0</td><td>0</td><td>3</td></tr>
-<tr><td>فيصل خليل</td><td>700</td><td>50</td><td>0</td><td>0</td><td>3</td></tr>
-<tr><td>عبدالله أحمد</td><td>750</td><td>50</td><td>0</td><td>50</td><td>3</td></tr>
-<tr><td>زيد خالد</td><td>900</td><td>100</td><td>0</td><td>40</td><td>3</td></tr>
-<tr><td>أنس عوض</td><td>220</td><td>50</td><td>0</td><td>0</td><td>3</td></tr>
-</table>
-<textarea name="q4" placeholder="أكمل جدول الرواتب والقيود: استحقاق الرواتب، حصة المنشأة، الدفع للضمان، دفع الرواتب..."></textarea>
+<h2>السؤال الرابع: الرواتب والضمان الاجتماعي - 24 علامة</h2>
+<div id="q4Box"></div>
 </div>
 
 <div class="question">
-<h2>السؤال الخامس - اختيار من متعدد - 24 علامة</h2>
-<div id="mcqBox"></div>
+<h2>السؤال الخامس: ضريبة الدخل والمبيعات - 24 علامة</h2>
+<div id="q5Box"></div>
 </div>
 
 <button type="button" onclick="submitExam()">تسليم الامتحان</button>
 <button type="button" class="secondary" onclick="window.print()">طباعة / حفظ PDF</button>
 
 <div class="result" id="result"></div>
+
 </form>
 </div>
 
 <script>
-const mcq = [
-{q:"يظهر حساب أمانات ضريبة المبيعات في:",a:["الأصول","المطلوبات","المصاريف","حقوق الملكية"],c:1},
-{q:"إحدى النسب التالية لا تظهر في إقرار ضريبة المبيعات الإلكتروني:",a:["16%","4%","2%","10%"],c:2},
-{q:"يبدأ تسجيل المنشأة في ضريبة الدخل عند:",a:["الوصول إلى حد التسجيل","مبيعات 175 ألف","مبيعات 30 ألف","تسجيل المنشأة في الصناعة والتجارة"],c:3},
-{q:"إعفاءات ذوي الاحتياجات الخاصة السنوي هو:",a:["1000 دينار","1500 دينار","2000 دينار","2500 دينار"],c:2},
-{q:"إعفاءات الإيجار للمكلف هو:",a:["1000 دينار","1500 دينار","2000 دينار","2500 دينار"],c:0},
-{q:"إعفاءات الأولاد:",a:["1000 دينار لكل طفل بحد أقصى 3 أطفال","2000 دينار لكل طفل بحد أقصى 3 أطفال","1000 دينار لكل طفل بحد أقصى طفلين","2000 دينار لكل طفل بحد أقصى طفلين"],c:0},
-{q:"إعفاء الشخص الطبيعي الشهري هو:",a:["800 دينار","700 دينار","750 دينار","850 دينار"],c:0},
-{q:"إعفاء الشخص الطبيعي من الزراعة يكون:",a:["أول 500,000 إجمالي مبيعات","أول 700,000 إجمالي مبيعات","أول 1,000,000 إجمالي مبيعات","أول 1,500,000 إجمالي مبيعات"],c:0},
-{q:"إذا كان ملف المكلف من فئة المستخدمين فهو:",a:["موظف","شركة ذات مسؤولية محدودة","مؤسسة فردية","شركة تضامن"],c:0},
-{q:"نسبة ضريبة الدخل على البنوك هي:",a:["30%","35%","40%","45%"],c:1},
-{q:"يدفع الموظف نسبة ضريبة دخل 15% عندما يكون صافي الدخل الخاضع للضريبة بعد الإعفاءات هو:",a:["10000 دينار","من 10001 لغاية 15000 دينار","من 1 لغاية 9000 دينار","من 15001 لغاية 20000 دينار"],c:1},
-{q:"يبلغ حد التسجيل في ضريبة المبيعات للقطاع الخدمي:",a:["20000 دينار","25000 دينار","30000 دينار","35000 دينار"],c:2}
+const questions = [
+
+/* السؤال الأول */
+{box:"q1Box", q:"في 10-1-2022 بدأت الشركة أعمالها برأس مال 10000 دينار أودع في البنك، ما القيد الصحيح؟",
+a:["من حـ/ البنك 10000 إلى حـ/ رأس المال 10000","من حـ/ رأس المال 10000 إلى حـ/ البنك 10000","من حـ/ الصندوق 10000 إلى حـ/ الإيرادات 10000","من حـ/ البنك 10000 إلى حـ/ الدائنين 10000"], c:0},
+
+{box:"q1Box", q:"شراء أثاث ومكاتب بقيمة 4000 دينار دفعت بشيك، ما القيد الصحيح؟",
+a:["من حـ/ البنك إلى حـ/ الأثاث","من حـ/ الأثاث والمكاتب 4000 إلى حـ/ البنك 4000","من حـ/ المصاريف إلى حـ/ رأس المال","من حـ/ الأثاث إلى حـ/ الدائنين"], c:1},
+
+{box:"q1Box", q:"شراء قرطاسية 150 دينار، نصفها بشيك ونصفها على الحساب، ما القيد الصحيح؟",
+a:["من حـ/ القرطاسية 150 إلى مذكورين: البنك 75 والدائنين 75","من حـ/ البنك 150 إلى حـ/ القرطاسية 150","من حـ/ الدائنين 150 إلى حـ/ البنك 150","من حـ/ القرطاسية 75 إلى حـ/ البنك 150"], c:0},
+
+{box:"q1Box", q:"تحصيل 2000 دينار مقابل خدمة واستلام المبلغ بشيك، ما القيد الصحيح؟",
+a:["من حـ/ إيراد الخدمات إلى حـ/ البنك","من حـ/ البنك 2000 إلى حـ/ إيراد الخدمات 2000","من حـ/ المدينين إلى حـ/ الإيراد","من حـ/ الصندوق إلى حـ/ رأس المال"], c:1},
+
+{box:"q1Box", q:"سداد المبلغ المستحق لمؤسسة النبا بشيك، ما القيد الصحيح؟",
+a:["من حـ/ الدائنين 75 إلى حـ/ البنك 75","من حـ/ البنك 75 إلى حـ/ الدائنين 75","من حـ/ القرطاسية 75 إلى حـ/ البنك 75","من حـ/ المصاريف إلى حـ/ الإيرادات"], c:0},
+
+{box:"q1Box", q:"تقديم خدمة لشركة سلاسل بقيمة 1500 دينار على الحساب، ما القيد الصحيح؟",
+a:["من حـ/ البنك إلى حـ/ الإيراد","من حـ/ المدينين 1500 إلى حـ/ إيراد الخدمات 1500","من حـ/ الإيراد إلى حـ/ المدينين","من حـ/ الصندوق إلى حـ/ الإيراد"], c:1},
+
+{box:"q1Box", q:"استلام شيك مؤجل بقيمة 1000 دينار يصرف بتاريخ لاحق، ما الحساب المدين؟",
+a:["البنك","الصندوق","شيكات برسم التحصيل","رأس المال"], c:2},
+
+{box:"q1Box", q:"بعد جميع العمليات النقدية والشيكات، رصيد حساب البنك الصحيح هو:",
+a:["7900 دينار","7850 دينار","8000 دينار","5925 دينار"], c:1},
+
+
+/* السؤال الثاني */
+{box:"q2Box", q:"أي من الحسابات التالية يعتبر من الأصول المتداولة؟",
+a:["النقدية","رأس المال","قروض طويلة الأجل","دائنين"], c:0},
+
+{box:"q2Box", q:"أي من الحسابات التالية يعتبر من الأصول الثابتة؟",
+a:["المدينين","المباني","دائنين","إيراد دورات مهنية"], c:1},
+
+{box:"q2Box", q:"المدينون يظهرون في الميزانية ضمن:",
+a:["الأصول","الخصوم","حقوق الملكية","الإيرادات"], c:0},
+
+{box:"q2Box", q:"القروض طويلة الأجل تظهر ضمن:",
+a:["الأصول المتداولة","الخصوم طويلة الأجل","الإيرادات","المصاريف"], c:1},
+
+{box:"q2Box", q:"رأس المال يظهر ضمن:",
+a:["الأصول","المصاريف","حقوق الملكية","الخصوم المتداولة"], c:2},
+
+{box:"q2Box", q:"أوراق الدفع تظهر ضمن:",
+a:["الأصول","الخصوم","المصاريف","الإيرادات"], c:1},
+
+{box:"q2Box", q:"المصاريف المدفوعة مقدماً تظهر ضمن:",
+a:["الأصول","الخصوم","حقوق الملكية","الإيرادات"], c:0},
+
+{box:"q2Box", q:"إيراد الدورات المهنية في الميزانية يؤثر على:",
+a:["زيادة حقوق الملكية","زيادة الخصوم","نقص الأصول","لا يظهر نهائياً"], c:0},
+
+{box:"q2Box", q:"المصاريف الإدارية والعمومية تؤثر على:",
+a:["زيادة رأس المال","تخفيض حقوق الملكية","زيادة الخصوم","زيادة الإيرادات"], c:1},
+
+{box:"q2Box", q:"الاحتياطي الإجباري يظهر ضمن:",
+a:["الأصول","الخصوم","حقوق الملكية","المصاريف"], c:2},
+
+{box:"q2Box", q:"الشيكات برسم التحصيل تعتبر:",
+a:["أصل","خصم","إيراد","مصروف"], c:0},
+
+
+/* السؤال الثالث */
+{box:"q3Box", q:"فاتورة خدمات استشارات بقيمة 2500 وضريبة مبيعات 400، الإجمالي 2900، الدفع بشيك. ما الطرف المدين؟",
+a:["البنك فقط","المدينون 2900","البنك 2900","إيراد الخدمات 2900"], c:2},
+
+{box:"q3Box", q:"في فاتورة المبيعات الأولى، ضريبة المبيعات تعتبر:",
+a:["أصل","مصروف","أمانات / مطلوبات","حقوق ملكية"], c:2},
+
+{box:"q3Box", q:"القيد الصحيح لفاتورة المبيعات الأولى هو:",
+a:["من حـ/ البنك 2900 إلى مذكورين: إيراد خدمات 2500 وأمانات ضريبة مبيعات 400","من حـ/ الإيراد 2900 إلى حـ/ البنك 2900","من حـ/ الضريبة 400 إلى حـ/ البنك 400","من حـ/ البنك 2500 إلى حـ/ الإيراد 2900"], c:0},
+
+{box:"q3Box", q:"فاتورة شراء أجهزة بقيمة 1660 وضريبة 265.6، ما إجمالي الفاتورة؟",
+a:["1660","1925.6","1225.6","700"], c:1},
+
+{box:"q3Box", q:"إذا تم دفع 700 من فاتورة مجموعها 1925.6، فإن الرصيد المستحق هو:",
+a:["265.6","1660","1225.6","1925.6"], c:2},
+
+{box:"q3Box", q:"في فاتورة الشراء، ضريبة المبيعات المدفوعة على المشتريات تظهر غالباً ضمن:",
+a:["أمانات ضريبة مبيعات / ضريبة قابلة للخصم","رأس المال","الإيرادات","دائنين فقط"], c:0},
+
+
+/* السؤال الرابع */
+{box:"q4Box", q:"إجمالي راتب لينا محمد إذا كان الأساسي 2100 والبدل 100 هو:",
+a:["2100","2200","2000","2300"], c:1},
+
+{box:"q4Box", q:"إجمالي راتب فيصل خليل إذا كان الأساسي 700 والبدل 50 هو:",
+a:["750","700","650","800"], c:0},
+
+{box:"q4Box", q:"إجمالي راتب عبدالله أحمد إذا كان الأساسي 750 والبدل 50 هو:",
+a:["700","750","800","850"], c:2},
+
+{box:"q4Box", q:"إجمالي راتب زيد خالد إذا كان الأساسي 900 والبدل 100 هو:",
+a:["900","950","1000","1100"], c:2},
+
+{box:"q4Box", q:"إجمالي راتب أنس عوض إذا كان الأساسي 220 والبدل 50 هو:",
+a:["220","250","270","300"], c:2},
+
+{box:"q4Box", q:"إجمالي الرواتب لجميع الموظفين هو:",
+a:["4670","5020","350","5000"], c:1},
+
+{box:"q4Box", q:"إذا كانت نسبة ضمان الموظف 7.5%، فإن ضمان لينا على راتب 2200 يساوي:",
+a:["150","165","170","160"], c:1},
+
+{box:"q4Box", q:"إذا كانت نسبة ضمان الموظف 7.5%، فإن ضمان فيصل على راتب 750 يساوي تقريباً:",
+a:["56.25","75","50","60"], c:0},
+
+{box:"q4Box", q:"قيد استحقاق الرواتب يجعل مصروف الرواتب:",
+a:["مدين","دائن","لا يظهر","حقوق ملكية"], c:0},
+
+{box:"q4Box", q:"صافي الراتب المستحق يساوي:",
+a:["إجمالي الراتب + الاقتطاعات","إجمالي الراتب - إجمالي الاقتطاعات","الراتب الأساسي فقط","البدل الإضافي فقط"], c:1},
+
+{box:"q4Box", q:"حصة صاحب العمل من الضمان الاجتماعي تعتبر:",
+a:["مصروف على المنشأة","إيراد","أصل ثابت","رأس مال"], c:0},
+
+{box:"q4Box", q:"عند دفع الرواتب للموظفين يكون الحساب الدائن غالباً:",
+a:["البنك","مصروف الرواتب","رأس المال","إيرادات"], c:0},
+
+
+/* السؤال الخامس */
+{box:"q5Box", q:"يظهر حساب أمانات ضريبة المبيعات في:",
+a:["الأصول","المطلوبات","المصاريف","حقوق الملكية"], c:1},
+
+{box:"q5Box", q:"إحدى النسب التالية لا تظهر في إقرار ضريبة المبيعات الإلكتروني:",
+a:["16%","4%","2%","10%"], c:2},
+
+{box:"q5Box", q:"يبدأ تسجيل المنشأة في ضريبة الدخل عند:",
+a:["الوصول إلى حد التسجيل","مبيعات 175 ألف","مبيعات 30 ألف","تسجيل المنشأة في الصناعة والتجارة"], c:3},
+
+{box:"q5Box", q:"إعفاءات ذوي الاحتياجات الخاصة السنوي هو:",
+a:["1000 دينار","1500 دينار","2000 دينار","2500 دينار"], c:2},
+
+{box:"q5Box", q:"إعفاءات الإيجار للمكلف هو:",
+a:["1000 دينار","1500 دينار","2000 دينار","2500 دينار"], c:0},
+
+{box:"q5Box", q:"إعفاءات الأولاد:",
+a:["1000 دينار لكل طفل بحد أقصى 3 أطفال","2000 دينار لكل طفل بحد أقصى 3 أطفال","1000 دينار لكل طفل بحد أقصى طفلين","2000 دينار لكل طفل بحد أقصى طفلين"], c:0},
+
+{box:"q5Box", q:"إعفاء الشخص الطبيعي الشهري هو:",
+a:["800 دينار","700 دينار","750 دينار","850 دينار"], c:0},
+
+{box:"q5Box", q:"إعفاء الشخص الطبيعي من الزراعة يكون:",
+a:["أول 500,000 إجمالي مبيعات","أول 700,000 إجمالي مبيعات","أول 1,000,000 إجمالي مبيعات","أول 1,500,000 إجمالي مبيعات"], c:0},
+
+{box:"q5Box", q:"إذا كان ملف المكلف من فئة المستخدمين فهو:",
+a:["موظف","شركة ذات مسؤولية محدودة","مؤسسة فردية","شركة تضامن"], c:0},
+
+{box:"q5Box", q:"نسبة ضريبة الدخل على البنوك هي:",
+a:["30%","35%","40%","45%"], c:1},
+
+{box:"q5Box", q:"يدفع الموظف نسبة ضريبة دخل 15% عندما يكون صافي الدخل الخاضع للضريبة بعد الإعفاءات هو:",
+a:["10000 دينار","من 10001 لغاية 15000 دينار","من 1 لغاية 9000 دينار","من 15001 لغاية 20000 دينار"], c:1},
+
+{box:"q5Box", q:"يبلغ حد التسجيل في ضريبة المبيعات للقطاع الخدمي:",
+a:["20000 دينار","25000 دينار","30000 دينار","35000 دينار"], c:2}
 ];
 
-function buildMCQ(){
-let box=document.getElementById("mcqBox");
-box.innerHTML="";
-mcq.forEach((item,i)=>{
-let html=`<div class="mcq"><p>${i+1}. ${item.q}</p>`;
-item.a.forEach((x,j)=>{
-html+=`<label><input type="radio" name="mcq${i}" value="${j}"> ${x}</label>`;
+function buildExam(){
+questions.forEach((item,i)=>{
+const box=document.getElementById(item.box);
+let html=`<div class="mcq" id="mcq${i}">
+<p>${i+1}. ${item.q}</p>`;
+item.a.forEach((ans,j)=>{
+html+=`
+<label>
+<input type="radio" name="q${i}" value="${j}">
+${ans}
+</label>`;
 });
 html+=`</div>`;
 box.innerHTML+=html;
 });
 }
-buildMCQ();
 
 function submitExam(){
 let score=0;
-mcq.forEach((item,i)=>{
-let ans=document.querySelector(`input[name="mcq${i}"]:checked`);
-if(ans && Number(ans.value)===item.c) score+=2;
+questions.forEach((item,i)=>{
+let selected=document.querySelector(`input[name="q${i}"]:checked`);
+let labels=document.querySelectorAll(`#mcq${i} label`);
+
+labels.forEach((label,index)=>{
+label.classList.remove("correct","wrong");
+if(index===item.c) label.classList.add("correct");
 });
+
+if(selected){
+if(Number(selected.value)===item.c){
+score++;
+}else{
+labels[Number(selected.value)].classList.add("wrong");
+}
+}
+});
+
+let percentage=Math.round((score/questions.length)*100);
 let name=document.getElementById("studentName").value || "بدون اسم";
+
 document.getElementById("result").style.display="block";
 document.getElementById("result").innerHTML=
-`تم تسليم الامتحان للمتدرب: ${name}<br>
-علامة السؤال الخامس آلياً: ${score} من 24<br>
-باقي الأسئلة يتم تصحيحها يدوياً.`;
-localStorage.setItem("exam_"+name, new FormData(document.getElementById("examForm")));
+`اسم المتدرب: ${name}<br>
+عدد الإجابات الصحيحة: ${score} من ${questions.length}<br>
+النسبة: ${percentage}%`;
 }
 
+buildExam();
+
 let seconds=2*60*60;
-setInterval(()=>{
+let timer=setInterval(()=>{
 seconds--;
 let h=String(Math.floor(seconds/3600)).padStart(2,"0");
 let m=String(Math.floor((seconds%3600)/60)).padStart(2,"0");
 let s=String(seconds%60).padStart(2,"0");
 document.getElementById("timer").innerText=`الوقت المتبقي: ${h}:${m}:${s}`;
-if(seconds<=0){submitExam(); alert("انتهى الوقت");}
+if(seconds<=0){
+clearInterval(timer);
+submitExam();
+alert("انتهى الوقت وتم تسليم الامتحان");
+}
 },1000);
 </script>
 
